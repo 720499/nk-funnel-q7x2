@@ -6,99 +6,62 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Воронка · Никадемия</title>
 <style>
-  :root{
-    --navy:#0B1F3A; --navy2:#13315C; --teal:#14B8A6; --teal-d:#0E8C7F;
-    --bg:#F4F7FB; --card:#fff; --line:#E5EAF1; --ink:#0B1F3A; --mut:#6B7A90;
-    --red:#EF4444; --amber:#F59E0B; --green:#16A34A;
-    --sh:0 1px 3px rgba(11,31,58,.08),0 8px 24px rgba(11,31,58,.06);
-  }
+  :root{--navy:#0B1F3A;--navy2:#13315C;--teal:#14B8A6;--teal-d:#0E8C7F;--bg:#F4F7FB;--card:#fff;--line:#E5EAF1;--ink:#0B1F3A;--mut:#6B7A90;--red:#EF4444;--sh:0 1px 3px rgba(11,31,58,.08),0 8px 24px rgba(11,31,58,.06)}
   *{box-sizing:border-box}
   body{margin:0;font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
   a{color:var(--teal-d)}
-  /* gate */
   #gate{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:50}
   #gate .box{background:#fff;padding:32px;border-radius:16px;width:320px;box-shadow:var(--sh);text-align:center}
-  #gate h1{font-size:18px;margin:0 0 4px}
-  #gate p{color:var(--mut);font-size:13px;margin:0 0 18px}
+  #gate h1{font-size:18px;margin:0 0 4px}#gate p{color:var(--mut);font-size:13px;margin:0 0 18px}
   #gate input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:15px;margin-bottom:10px}
   #gate button{width:100%;padding:12px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;font-size:15px;cursor:pointer}
   #gate .err{color:var(--red);font-size:13px;height:16px;margin-top:8px}
-  /* app */
   #app{display:none;max-width:1080px;margin:0 auto;padding:24px 18px 64px}
   header.top{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-  header.top h1{font-size:22px;margin:0}
-  header.top .sub{color:var(--mut);font-size:13px}
-  .row{display:grid;gap:14px}
-  .kpis{grid-template-columns:repeat(4,1fr);margin-bottom:18px}
+  header.top h1{font-size:22px;margin:0}header.top .sub{color:var(--mut);font-size:13px}
+  .row{display:grid;gap:14px}.kpis{grid-template-columns:repeat(4,1fr);margin-bottom:18px}
   @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh)}
-  .kpi{padding:16px}
-  .kpi .v{font-size:26px;font-weight:700}
+  .kpi{padding:16px}.kpi .v{font-size:26px;font-weight:700}.kpi .v.rev{color:var(--teal-d)}
   .kpi .l{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
-  .kpi .v.rev{color:var(--teal-d)}
-  section{margin-bottom:22px}
-  section h2{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:0 0 10px}
-  /* funnel */
-  .funnel{padding:18px}
-  .stage{display:flex;align-items:center;gap:12px;margin:8px 0}
+  section{margin-bottom:22px}section h2{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:0 0 10px}
+  .funnel{padding:18px}.stage{display:flex;align-items:center;gap:12px;margin:8px 0}
   .stage .name{width:90px;font-size:13px;color:var(--mut)}
-  .stage .bar{flex:1;height:34px;background:#EEF3F9;border-radius:8px;overflow:hidden;position:relative}
+  .stage .bar{flex:1;height:34px;background:#EEF3F9;border-radius:8px;overflow:hidden}
   .stage .fill{height:100%;background:linear-gradient(90deg,var(--navy2),var(--teal));display:flex;align-items:center;padding:0 10px;color:#fff;font-weight:600;font-size:13px;min-width:42px}
   .stage .conv{width:78px;text-align:right;font-size:12px;color:var(--mut)}
-  /* tabs */
   .tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
   .tab{padding:8px 14px;border:1px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;color:var(--mut)}
   .tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-  .pane{display:none}
-  .pane.on{display:block}
+  .pane{display:none}.pane.on{display:block}
   table{width:100%;border-collapse:collapse;font-size:14px}
   th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
   th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);font-weight:600}
   td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600}
-  .s-new{background:#EEF3F9;color:var(--navy2)} .s-talk{background:#FEF3C7;color:#92400E}
-  .s-buy{background:#DCFCE7;color:#166534} .s-no{background:#FEE2E2;color:#991B1B}
-  .form{display:flex;gap:8px;flex-wrap:wrap;padding:12px;background:#FAFCFE;border-top:1px solid var(--line)}
-  .form input,.form select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px}
-  .form button{padding:9px 14px;border:0;border-radius:8px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer}
-  .btn-sec{background:#fff;border:1px solid var(--line);color:var(--navy2);padding:8px 12px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer}
-  .bonus-btn{cursor:pointer;border:0;background:none;font-size:18px}
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
-  .note{color:var(--mut);font-size:12px;margin-top:8px}
+  .s-new{background:#EEF3F9;color:var(--navy2)}.s-talk{background:#FEF3C7;color:#92400E}.s-buy{background:#DCFCE7;color:#166534}.s-no{background:#FEE2E2;color:#991B1B}
+  .baredit{display:flex;justify-content:flex-end;padding:10px 12px;border-top:1px solid var(--line);background:#FAFCFE}
+  .btn-sec{display:inline-block;background:#fff;border:1px solid var(--line);color:var(--navy2);padding:8px 12px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}.note{color:var(--mut);font-size:12px;margin-top:8px}
 </style>
 </head>
 <body>
-
-<div id="gate">
-  <div class="box">
-    <h1>Воронка Никадемии</h1>
-    <p>Введите пароль</p>
-    <input id="pw" type="password" autocomplete="off" placeholder="••••••••">
-    <button onclick="tryLogin()">Войти</button>
-    <div class="err" id="gerr"></div>
-  </div>
-</div>
+<div id="gate"><div class="box">
+  <h1>Воронка Никадемии</h1><p>Введите пароль</p>
+  <input id="pw" type="password" autocomplete="off" placeholder="••••••••">
+  <button onclick="tryLogin()">Войти</button><div class="err" id="gerr"></div>
+</div></div>
 
 <div id="app">
   <header class="top">
-    <div>
-      <h1>Воронка продаж · аудит-конструктор</h1>
-      <div class="sub" id="updated"></div>
-    </div>
+    <div><h1>Воронка продаж · аудит-конструктор</h1><div class="sub" id="updated"></div></div>
     <div class="toolbar">
-      <button class="btn-sec" onclick="exportData()">⬇ Бэкап данных</button>
-      <label class="btn-sec" style="cursor:pointer">⬆ Импорт<input type="file" id="imp" accept="application/json" style="display:none" onchange="importData(event)"></label>
+      <button class="btn-sec" onclick="loadData()">🔄 Обновить</button>
+      <a class="btn-sec" id="openSheet" target="_blank">📋 Открыть таблицу</a>
     </div>
   </header>
-
   <div class="row kpis" id="kpis"></div>
-
-  <section>
-    <h2>Воронка</h2>
-    <div class="card funnel" id="funnel"></div>
-    <div class="note" id="fnote"></div>
-  </section>
-
+  <section><h2>Воронка</h2><div class="card funnel" id="funnel"></div><div class="note" id="fnote"></div></section>
   <section>
     <div class="tabs">
       <div class="tab on" data-t="posts" onclick="tab('posts')">Посты</div>
@@ -106,124 +69,67 @@
       <div class="tab" data-t="sales" onclick="tab('sales')">Продажи</div>
       <div class="tab" data-t="bonus" onclick="tab('bonus')">Бонусы</div>
     </div>
-
-    <div class="pane on" id="p-posts">
-      <div class="card"><table><thead><tr><th>Пост</th><th>Источник</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Лиды</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-posts"></tbody></table></div>
-    </div>
-
-    <div class="pane" id="p-leads">
-      <div class="card">
-        <table><thead><tr><th>Имя</th><th>Источник</th><th>Канал</th><th>Статус</th><th>Заметка</th><th></th></tr></thead><tbody id="t-leads"></tbody></table>
-        <div class="form">
-          <input id="l-name" placeholder="Имя"><input id="l-src" placeholder="Источник (пост / личка)">
-          <select id="l-ch"><option>форма</option><option>ЛС</option><option>звонок</option></select>
-          <select id="l-st"><option value="новый">новый</option><option value="диалог">диалог</option><option value="купил">купил</option><option value="отказ">отказ</option></select>
-          <input id="l-note" placeholder="Заметка"><button onclick="addLead()">+ Лид</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="pane" id="p-sales">
-      <div class="card">
-        <table><thead><tr><th>Клиент</th><th>Заказ</th><th>Продукт</th><th class="num">Сумма</th><th>Дата</th><th>Источник</th><th></th></tr></thead><tbody id="t-sales"></tbody></table>
-        <div class="form">
-          <input id="s-name" placeholder="Клиент"><input id="s-order" placeholder="Заказ #">
-          <input id="s-prod" placeholder="Продукт" value="Аудит-конструктор">
-          <input id="s-amt" type="number" placeholder="Сумма" value="4990">
-          <input id="s-date" type="date"><input id="s-src" placeholder="Источник">
-          <button onclick="addSale()">+ Продажа</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="pane" id="p-bonus">
-      <div class="card"><table><thead><tr><th>Купивший</th><th>Продукт</th><th>Бонус (вау-страница)</th><th>Апселл</th></tr></thead><tbody id="t-bonus"></tbody></table></div>
-      <div class="note">Бонус = бесплатная персональная вау-страница (как у Тогрула) → вытягивает на следующий продукт каскада. Генератор страниц — фаза 2.</div>
-    </div>
+    <div class="pane on" id="p-posts"><div class="card"><table><thead><tr><th>Пост</th><th>Источник</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Лиды</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-posts"></tbody></table></div></div>
+    <div class="pane" id="p-leads"><div class="card"><table><thead><tr><th>Имя</th><th>Источник</th><th>Канал</th><th>Статус</th><th>Заметка</th></tr></thead><tbody id="t-leads"></tbody></table><div class="baredit"><a class="btn-sec" id="edit-leads" target="_blank">✏ Добавить / править лиды в таблице</a></div></div></div>
+    <div class="pane" id="p-sales"><div class="card"><table><thead><tr><th>Клиент</th><th>Заказ</th><th>Продукт</th><th class="num">Сумма</th><th>Дата</th><th>Источник</th></tr></thead><tbody id="t-sales"></tbody></table><div class="baredit"><a class="btn-sec" id="edit-sales" target="_blank">✏ Добавить / править продажи в таблице</a></div></div></div>
+    <div class="pane" id="p-bonus"><div class="card"><table><thead><tr><th>Купивший</th><th>Продукт</th><th>Бонус (вау-страница)</th><th>Апселл</th></tr></thead><tbody id="t-bonus"></tbody></table><div class="baredit"><a class="btn-sec" id="edit-bonus" target="_blank">✏ Отметить бонус / апселл в таблице</a></div></div><div class="note">Бонус = бесплатная вау-страница (как у Тогрула) → апселл на следующий продукт. Колонки bonus (TRUE/FALSE) и upsell правишь в листе sales.</div></div>
   </section>
 </div>
 
 <script>
-const PASSWORD = "voronka2026"; // ← смени на свой
-const KEY = "dash_voronka_v1";
+const PASSWORD="voronka2026"; // ← смени на свой
+const SHEET_ID="1h6xTK6FNMyKA25oLvj0ppgjMKFg0SXkOzSPNA9w3FVw";
+const GIDS={posts:479830602,leads:1996505555,sales:1183168611};
+const SHEET_URL="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/edit";
+const KEY="dash_voronka_cache";
+let DATA={posts:[],leads:[],sales:[]};
 
-const SEED = {
-  updated: "2026-06-07",
-  posts: [
-    {id:"post00",     source:"Telegram", title:"Пост 00 — Где утекают деньги", impressions:339, clicks:3, leads:1, sales:1, revenue:4990},
-    {id:"post00_max", source:"МАКС",     title:"Пост 00 — зеркало в МАКС",     impressions:35,  clicks:0, leads:0, sales:0, revenue:0},
-    {id:"post01",     source:"Telegram", title:"Пост 01 — Налей денег",        impressions:0,   clicks:0, leads:0, sales:0, revenue:0}
-  ],
-  leads: [
-    {id:1, name:"Наталья", source:"Telegram / пост 00", channel:"форма", status:"купил", note:"заказ 3777, 4990 ₽"},
-    {id:2, name:"Тогрул",  source:"личка",              channel:"ЛС",    status:"диалог", note:"сделана вау веб-страница"}
-  ],
-  sales: [
-    {id:1, name:"Наталья", order:"3777", product:"Аудит-конструктор", amount:4990, date:"2026-06-07", source:"Telegram / пост 00", bonus:false, upsell:"нет"}
-  ]
-};
-
-let DATA = load();
-
-function load(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):structuredClone(SEED);}catch(e){return structuredClone(SEED);} }
-function save(){ localStorage.setItem(KEY, JSON.stringify(DATA)); render(); }
-
-/* gate */
-function tryLogin(){
-  if(document.getElementById("pw").value===PASSWORD){ sessionStorage.setItem("dash_ok","1"); open(); }
-  else document.getElementById("gerr").textContent="Неверный пароль";
-}
-function open(){ document.getElementById("gate").style.display="none"; document.getElementById("app").style.display="block"; render(); }
+function tryLogin(){ if(document.getElementById("pw").value===PASSWORD){sessionStorage.setItem("dash_ok","1");openApp();} else document.getElementById("gerr").textContent="Неверный пароль"; }
+function openApp(){ document.getElementById("gate").style.display="none"; document.getElementById("app").style.display="block";
+  document.getElementById("openSheet").href=SHEET_URL;
+  document.getElementById("edit-leads").href=SHEET_URL+"#gid="+GIDS.leads;
+  document.getElementById("edit-sales").href=SHEET_URL+"#gid="+GIDS.sales;
+  document.getElementById("edit-bonus").href=SHEET_URL+"#gid="+GIDS.sales;
+  loadData(); }
 document.getElementById("pw").addEventListener("keydown",e=>{if(e.key==="Enter")tryLogin();});
-if(sessionStorage.getItem("dash_ok")==="1") open();
+if(sessionStorage.getItem("dash_ok")==="1") openApp();
 
-/* render */
-const money=n=>n.toLocaleString("ru-RU")+" ₽";
-function render(){
-  document.getElementById("updated").textContent="обновлено "+DATA.updated+" · данные в этом браузере (бэкап кнопкой ⬇)";
-  const rev=DATA.sales.reduce((s,x)=>s+(+x.amount||0),0);
-  const nsales=DATA.sales.length, nleads=DATA.leads.length;
-  const avg=nsales?Math.round(rev/nsales):0;
-  document.getElementById("kpis").innerHTML=[
-    ["Выручка",money(rev),"rev"],["Продажи",nsales,""],["Лиды",nleads,""],["Средний чек",money(avg),""]
-  ].map(k=>`<div class="card kpi"><div class="v ${k[2]}">${k[1]}</div><div class="l">${k[0]}</div></div>`).join("");
-
-  const imp=DATA.posts.reduce((s,x)=>s+ +x.impressions,0);
-  const clk=DATA.posts.reduce((s,x)=>s+ +x.clicks,0);
-  const stages=[["Показы",imp],["Клики",clk],["Лиды",nleads],["Оплаты",nsales]];
-  const max=Math.max(imp,1);
-  document.getElementById("funnel").innerHTML=stages.map((s,i)=>{
-    const w=Math.max(s[1]/max*100,3);
-    const conv=i>0&&stages[i-1][1]?Math.round(s[1]/stages[i-1][1]*100)+"%":"";
-    return `<div class="stage"><div class="name">${s[0]}</div><div class="bar"><div class="fill" style="width:${w}%">${s[1]}</div></div><div class="conv">${conv}</div></div>`;
-  }).join("");
-  document.getElementById("fnote").textContent="Клики поста 00 неполные: Метрика подключена после публикации. С поста 01 — полные данные.";
-
-  document.getElementById("t-posts").innerHTML=DATA.posts.map(p=>`<tr><td>${p.title}</td><td>${p.source}</td><td class="num">${p.impressions}</td><td class="num">${p.clicks}</td><td class="num">${p.leads}</td><td class="num">${p.sales}</td><td class="num">${p.revenue?money(p.revenue):"—"}</td></tr>`).join("");
-
-  const sc={новый:"s-new",диалог:"s-talk",купил:"s-buy",отказ:"s-no"};
-  document.getElementById("t-leads").innerHTML=DATA.leads.map(l=>`<tr><td>${l.name}</td><td>${l.source}</td><td>${l.channel}</td><td><span class="pill ${sc[l.status]||'s-new'}">${l.status}</span></td><td>${l.note||""}</td><td><button class="bonus-btn" title="удалить" onclick="delItem('leads',${l.id})">✕</button></td></tr>`).join("");
-
-  document.getElementById("t-sales").innerHTML=DATA.sales.map(s=>`<tr><td>${s.name}</td><td>${s.order}</td><td>${s.product}</td><td class="num">${money(+s.amount)}</td><td>${s.date}</td><td>${s.source||""}</td><td><button class="bonus-btn" title="удалить" onclick="delItem('sales',${s.id})">✕</button></td></tr>`).join("");
-
-  document.getElementById("t-bonus").innerHTML=DATA.sales.map(s=>`<tr><td>${s.name}</td><td>${s.product}</td><td><button class="bonus-btn" onclick="toggleBonus(${s.id})">${s.bonus?"✅ отправлен":"⬜ не отправлен"}</button></td><td><input class="btn-sec" style="width:120px" value="${s.upsell||'нет'}" onchange="setUpsell(${s.id},this.value)"></td></tr>`).join("");
+async function gviz(gid){
+  const u="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:json&gid="+gid+"&t="+Date.now();
+  const t=await (await fetch(u)).text();
+  const j=JSON.parse(t.substring(t.indexOf("{"),t.lastIndexOf("}")+1));
+  const cols=j.table.cols.map(c=>c.label||c.id);
+  return j.table.rows.map(r=>{const o={};(r.c||[]).forEach((cell,i)=>{let v=cell?cell.v:"";if(typeof v==="string"&&v.startsWith("Date(")&&cell.f)v=cell.f;o[cols[i]]=v;});return o;});
 }
-
-/* mutations */
-const nid=a=>a.length?Math.max(...a.map(x=>x.id))+1:1;
-function addLead(){const n=v("l-name");if(!n)return;DATA.leads.push({id:nid(DATA.leads),name:n,source:v("l-src"),channel:v("l-ch"),status:v("l-st"),note:v("l-note")});clr(["l-name","l-src","l-note"]);save();}
-function addSale(){const n=v("s-name");if(!n)return;DATA.sales.push({id:nid(DATA.sales),name:n,order:v("s-order"),product:v("s-prod"),amount:+v("s-amt")||0,date:v("s-date")||DATA.updated,source:v("s-src"),bonus:false,upsell:"нет"});clr(["s-name","s-order","s-src"]);save();}
-function delItem(t,id){DATA[t]=DATA[t].filter(x=>x.id!==id);save();}
-function toggleBonus(id){const s=DATA.sales.find(x=>x.id===id);if(s){s.bonus=!s.bonus;save();}}
-function setUpsell(id,val){const s=DATA.sales.find(x=>x.id===id);if(s){s.upsell=val;save();}}
-const v=id=>document.getElementById(id).value.trim();
-const clr=ids=>ids.forEach(i=>document.getElementById(i).value="");
-
-/* backup */
-function exportData(){const b=new Blob([JSON.stringify(DATA,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="voronka_backup_"+DATA.updated+".json";a.click();}
-function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{DATA=JSON.parse(r.result);save();}catch(x){alert("Не JSON");}};r.readAsText(f);}
-
-/* tabs */
+async function loadData(){
+  try{
+    const [posts,leads,sales]=await Promise.all([gviz(GIDS.posts),gviz(GIDS.leads),gviz(GIDS.sales)]);
+    DATA={posts,leads,sales};
+    localStorage.setItem(KEY,JSON.stringify(DATA));
+    document.getElementById("updated").textContent="обновлено "+new Date().toLocaleString("ru-RU")+" · из Google-таблицы";
+  }catch(e){
+    const c=localStorage.getItem(KEY); if(c)DATA=JSON.parse(c);
+    document.getElementById("updated").textContent="⚠ нет связи с таблицей — показан кэш";
+  }
+  render();
+}
+const money=n=>(+n||0).toLocaleString("ru-RU")+" ₽";
+const num=v=>+String(v).replace(/[^\d.-]/g,"")||0;
+function render(){
+  const rev=DATA.sales.reduce((s,x)=>s+num(x.amount),0), nsales=DATA.sales.length, nleads=DATA.leads.length, avg=nsales?Math.round(rev/nsales):0;
+  document.getElementById("kpis").innerHTML=[["Выручка",money(rev),"rev"],["Продажи",nsales,""],["Лиды",nleads,""],["Средний чек",money(avg),""]]
+    .map(k=>`<div class="card kpi"><div class="v ${k[2]}">${k[1]}</div><div class="l">${k[0]}</div></div>`).join("");
+  const imp=DATA.posts.reduce((s,x)=>s+num(x.impressions),0), clk=DATA.posts.reduce((s,x)=>s+num(x.clicks),0);
+  const stages=[["Показы",imp],["Клики",clk],["Лиды",nleads],["Оплаты",nsales]], max=Math.max(imp,1);
+  document.getElementById("funnel").innerHTML=stages.map((s,i)=>{const w=Math.max(s[1]/max*100,3);const conv=i>0&&stages[i-1][1]?Math.round(s[1]/stages[i-1][1]*100)+"%":"";return `<div class="stage"><div class="name">${s[0]}</div><div class="bar"><div class="fill" style="width:${w}%">${s[1]}</div></div><div class="conv">${conv}</div></div>`;}).join("");
+  document.getElementById("fnote").textContent="Клики поста 00 неполные: Метрика подключена после публикации. С поста 01 — полные данные.";
+  document.getElementById("t-posts").innerHTML=DATA.posts.map(p=>`<tr><td>${p.title||p.id}</td><td>${p.source}</td><td class="num">${num(p.impressions)}</td><td class="num">${num(p.clicks)}</td><td class="num">${num(p.leads)}</td><td class="num">${num(p.sales)}</td><td class="num">${num(p.revenue)?money(p.revenue):"—"}</td></tr>`).join("");
+  const sc={"новый":"s-new","диалог":"s-talk","купил":"s-buy","отказ":"s-no"};
+  document.getElementById("t-leads").innerHTML=DATA.leads.map(l=>`<tr><td>${l.name}</td><td>${l.source}</td><td>${l.channel}</td><td><span class="pill ${sc[l.status]||'s-new'}">${l.status}</span></td><td>${l.note||""}</td></tr>`).join("");
+  document.getElementById("t-sales").innerHTML=DATA.sales.map(s=>`<tr><td>${s.name}</td><td>${s.order}</td><td>${s.product}</td><td class="num">${money(s.amount)}</td><td>${s.date}</td><td>${s.source||""}</td></tr>`).join("");
+  const tb=v=>v===true||v==="TRUE"||v==="ИСТИНА";
+  document.getElementById("t-bonus").innerHTML=DATA.sales.map(s=>`<tr><td>${s.name}</td><td>${s.product}</td><td>${tb(s.bonus)?"✅ отправлен":"⬜ не отправлен"}</td><td>${s.upsell||"нет"}</td></tr>`).join("");
+}
 function tab(t){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x.dataset.t===t));document.querySelectorAll(".pane").forEach(x=>x.classList.remove("on"));document.getElementById("p-"+t).classList.add("on");}
 </script>
 </body>
