@@ -65,11 +65,11 @@
   <section>
     <div class="tabs">
       <div class="tab on" data-t="posts" onclick="tab('posts')">Посты</div>
-      <div class="tab" data-t="leads" onclick="tab('leads')">Лиды</div>
+      <div class="tab" data-t="leads" onclick="tab('leads')">Обращения</div>
       <div class="tab" data-t="sales" onclick="tab('sales')">Продажи</div>
       <div class="tab" data-t="bonus" onclick="tab('bonus')">Бонусы</div>
     </div>
-    <div class="pane on" id="p-posts"><div class="card"><table><thead><tr><th>Пост</th><th>Источник</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Лиды</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-posts"></tbody></table></div></div>
+    <div class="pane on" id="p-posts"><div class="card"><table><thead><tr><th>Пост</th><th>Источник</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Заявки</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-posts"></tbody></table></div></div>
     <div class="pane" id="p-leads"><div class="card"><table><thead><tr><th>Имя</th><th>Источник</th><th>Канал</th><th>Статус</th><th>Заметка</th></tr></thead><tbody id="t-leads"></tbody></table><div class="baredit"><a class="btn-sec" id="edit-leads" target="_blank">✏ Добавить / править лиды в таблице</a></div></div></div>
     <div class="pane" id="p-sales"><div class="card"><table><thead><tr><th>Клиент</th><th>Заказ</th><th>Продукт</th><th class="num">Сумма</th><th>Дата</th><th>Источник</th></tr></thead><tbody id="t-sales"></tbody></table><div class="baredit"><a class="btn-sec" id="edit-sales" target="_blank">✏ Добавить / править продажи в таблице</a></div></div></div>
     <div class="pane" id="p-bonus"><div class="card"><table><thead><tr><th>Купивший</th><th>Продукт</th><th>Бонус (вау-страница)</th><th>Апселл</th></tr></thead><tbody id="t-bonus"></tbody></table><div class="baredit"><a class="btn-sec" id="edit-bonus" target="_blank">✏ Отметить бонус / апселл в таблице</a></div></div><div class="note">Бонус = бесплатная вау-страница (как у Тогрула) → апселл на следующий продукт. Колонки bonus (TRUE/FALSE) и upsell правишь в листе sales.</div></div>
@@ -117,12 +117,12 @@ const money=n=>(+n||0).toLocaleString("ru-RU")+" ₽";
 const num=v=>+String(v).replace(/[^\d.-]/g,"")||0;
 function render(){
   const rev=DATA.sales.reduce((s,x)=>s+num(x.amount),0), nsales=DATA.sales.length, nleads=DATA.leads.length, avg=nsales?Math.round(rev/nsales):0;
-  document.getElementById("kpis").innerHTML=[["Выручка",money(rev),"rev"],["Продажи",nsales,""],["Лиды",nleads,""],["Средний чек",money(avg),""]]
+  document.getElementById("kpis").innerHTML=[["Выручка",money(rev),"rev"],["Продажи",nsales,""],["Обращения",nleads,""],["Средний чек",money(avg),""]]
     .map(k=>`<div class="card kpi"><div class="v ${k[2]}">${k[1]}</div><div class="l">${k[0]}</div></div>`).join("");
-  const imp=DATA.posts.reduce((s,x)=>s+num(x.impressions),0), clk=DATA.posts.reduce((s,x)=>s+num(x.clicks),0);
-  const stages=[["Показы",imp],["Клики",clk],["Лиды",nleads],["Оплаты",nsales]], max=Math.max(imp,1);
+  const imp=DATA.posts.reduce((s,x)=>s+num(x.impressions),0), clk=DATA.posts.reduce((s,x)=>s+num(x.clicks),0), pleads=DATA.posts.reduce((s,x)=>s+num(x.leads),0);
+  const stages=[["Показы",imp],["Клики",clk],["Заявки",pleads],["Оплаты",nsales]], max=Math.max(imp,1);
   document.getElementById("funnel").innerHTML=stages.map((s,i)=>{const w=Math.max(s[1]/max*100,3);const conv=i>0&&stages[i-1][1]?Math.round(s[1]/stages[i-1][1]*100)+"%":"";return `<div class="stage"><div class="name">${s[0]}</div><div class="bar"><div class="fill" style="width:${w}%">${s[1]}</div></div><div class="conv">${conv}</div></div>`;}).join("");
-  document.getElementById("fnote").textContent="Клики поста 00 неполные: Метрика подключена после публикации. С поста 01 — полные данные.";
+  document.getElementById("fnote").textContent="«Заявки» — оставили заявку на лендинге (воронка трипваера, "+pleads+"). «Обращения» (вкладка) — все написавшие: лендинг, личка, ВК ("+nleads+"). Клики поста 00 неполные: Метрика подключена после публикации.";
   document.getElementById("t-posts").innerHTML=DATA.posts.map(p=>`<tr><td>${p.title||p.id}</td><td>${p.source}</td><td class="num">${num(p.impressions)}</td><td class="num">${num(p.clicks)}</td><td class="num">${num(p.leads)}</td><td class="num">${num(p.sales)}</td><td class="num">${num(p.revenue)?money(p.revenue):"—"}</td></tr>`).join("");
   const sc={"новый":"s-new","диалог":"s-talk","купил":"s-buy","отказ":"s-no"};
   document.getElementById("t-leads").innerHTML=DATA.leads.map(l=>`<tr><td>${l.name}</td><td>${l.source}</td><td>${l.channel}</td><td><span class="pill ${sc[l.status]||'s-new'}">${l.status}</span></td><td>${l.note||""}</td></tr>`).join("");
