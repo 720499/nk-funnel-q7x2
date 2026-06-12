@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B1F3A">
+<title>Штаб · Никадемия</title>
+<style>
+  :root{--navy:#0B1F3A;--navy2:#13315C;--teal:#14B8A6;--teal-d:#0E8C7F;--bg:#F4F7FB;--card:#fff;--line:#E5EAF1;--ink:#0B1F3A;--mut:#6B7A90;--red:#EF4444;--amber:#F59E0B;--green:#22C55E;--sh:0 1px 3px rgba(11,31,58,.08),0 8px 24px rgba(11,31,58,.06)}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  a{color:var(--teal-d)}
+  #gate{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:50}
+  #gate .box{background:#fff;padding:32px;border-radius:16px;width:320px;box-shadow:var(--sh);text-align:center}
+  #gate h1{font-size:18px;margin:0 0 4px}#gate p{color:var(--mut);font-size:13px;margin:0 0 18px}
+  #gate input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:15px;margin-bottom:10px}
+  #gate button{width:100%;padding:12px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;font-size:15px;cursor:pointer}
+  #gate .err{color:var(--red);font-size:13px;height:16px;margin-top:8px}
+  #app{display:none;max-width:640px;margin:0 auto;padding:20px 14px 64px}
+  header.top{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  header.top h1{font-size:22px;margin:0}header.top .sub{color:var(--mut);font-size:12px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+  .btn-sec{display:inline-block;background:#fff;border:1px solid var(--line);color:var(--navy2);padding:9px 13px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none}
+  section{margin-bottom:22px}
+  section h2{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:0 0 9px;display:flex;justify-content:space-between;align-items:baseline}
+  section h2 .hd{font-size:12px;text-transform:none;letter-spacing:0;font-weight:400}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);overflow:hidden}
+  .note{color:var(--mut);font-size:12px;margin-top:7px}
+  /* — Сегодня — */
+  .deal{display:flex;gap:11px;padding:13px 15px;border-bottom:1px solid var(--line)}
+  .deal:last-child{border-bottom:0}
+  .deal .dot{width:10px;height:10px;border-radius:50%;flex:none;margin-top:7px}
+  .dot.r{background:var(--red)}.dot.y{background:var(--amber)}.dot.g{background:var(--green)}.dot.m{background:#C3CFDE}
+  .deal .body{flex:1;min-width:0}
+  .deal .who{font-weight:700;font-size:15px}
+  .deal .act{font-size:14px;margin:1px 0 5px}
+  .deal .meta{font-size:12px;color:var(--mut);display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .deal.wait{background:#FAFCFE}
+  .deal.wait .who,.deal.wait .act{color:var(--mut);font-weight:600}
+  .deal.wait .act{font-weight:400}
+  .chip{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700}
+  .c-over{background:#FEE2E2;color:#991B1B}.c-today{background:#FEF3C7;color:#92400E}.c-soon{background:#EEF3F9;color:var(--navy2)}
+  .allgood{padding:18px 16px;font-weight:700;color:var(--teal-d)}
+  /* — Воронка — */
+  .hero{display:flex;align-items:baseline;gap:12px;padding:15px 16px 4px;flex-wrap:wrap}
+  .hero .v{font-size:34px;font-weight:800;color:var(--teal-d);font-variant-numeric:tabular-nums;line-height:1.1}
+  .hero .s{font-size:13px;color:var(--mut)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:0}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);font-weight:600}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.t{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  tr.agg td{font-weight:600}
+  /* — Лестница — */
+  .rung{display:flex;gap:12px;padding:13px 15px;border-bottom:1px solid var(--line)}
+  .rung:last-child{border-bottom:0}
+  .rung .n{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
+  .rung .body{flex:1;min-width:0}
+  .rung .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700}
+  .rung .nm{font-weight:600;font-size:14px;line-height:1.35}
+  .rung .pr{font-size:12.5px;color:var(--mut);margin-top:2px}
+  .rung .lv{font-size:13px;font-weight:700;color:var(--teal-d);margin-top:3px}
+  .rung .st{font-size:12.5px;color:var(--navy2);margin-top:3px}
+  /* — Трубы — */
+  .pipes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .pipe{padding:12px 13px}
+  .pipe .pn{font-weight:700;font-size:14px;display:flex;align-items:center;gap:7px}
+  .pipe .pn .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .pipe .ps{font-size:12.5px;margin:6px 0 8px}
+  .pipe .nx{font-size:11.5px;color:var(--mut);border-top:1px dashed var(--line);padding-top:7px}
+  .pipe .nx b{color:var(--teal-d);font-weight:600}
+  /* — Активы — */
+  .links a{display:flex;align-items:center;gap:11px;padding:14px 16px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);font-weight:600;font-size:14px}
+  .links a:last-child{border-bottom:0}
+  .links .arr{margin-left:auto;color:var(--mut);font-weight:400}
+</style>
+</head>
+<body>
+<div id="gate"><div class="box">
+  <h1>Штаб Никадемии</h1><p>Введите пароль</p>
+  <input id="pw" type="password" autocomplete="off" placeholder="••••••••">
+  <button onclick="tryLogin()">Войти</button><div class="err" id="gerr"></div>
+</div></div>
+
+<div id="app">
+  <header class="top">
+    <div><h1>🎯 Штаб</h1><div class="sub" id="updated"></div></div>
+    <div class="toolbar">
+      <button class="btn-sec" onclick="loadData()">🔄 Обновить</button>
+      <a class="btn-sec" href="./index.html">📊 Дашборд</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>Сегодня · действия дня <span class="hd" id="hdate"></span></h2>
+    <div class="card" id="today"></div>
+  </section>
+
+  <section>
+    <h2>Воронка деньгами</h2>
+    <div class="card">
+      <div class="hero"><div class="v" id="hrev"></div><div class="s" id="hsub"></div></div>
+      <table><thead><tr><th>Период</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Заявки</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-agg"></tbody></table>
+    </div>
+    <div class="note">«7 дней» — по полю date поста; зеркала без даты не входят.</div>
+  </section>
+
+  <section>
+    <h2>Топ постов</h2>
+    <div class="card"><table><thead><tr><th>Пост</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-top"></tbody></table></div>
+  </section>
+
+  <section>
+    <h2>Лестница продуктов</h2>
+    <div class="card" id="ladder"></div>
+  </section>
+
+  <section>
+    <h2>Трубы каналов</h2>
+    <div class="pipes" id="pipes"></div>
+  </section>
+
+  <section>
+    <h2>Карта активов</h2>
+    <div class="card links" id="assets"></div>
+  </section>
+</div>
+
+<script>
+const PASSWORD="voronka2026"; // тот же, что у дашборда
+const SHEET_ID="1h6xTK6FNMyKA25oLvj0ppgjMKFg0SXkOzSPNA9w3FVw";
+const GIDS={posts:479830602,sales:1183168611}; // deals — по имени листа (sheet=deals&headers=1)
+const SHEET_URL="https://docs.google.com/spreadsheets/d/"+SHEET_ID;
+const KEY="shtab_voronka_cache";
+let DATA={posts:[],sales:[],deals:[]};
+
+function tryLogin(){ if(document.getElementById("pw").value===PASSWORD){sessionStorage.setItem("dash_ok","1");openApp();} else document.getElementById("gerr").textContent="Неверный пароль"; }
+function openApp(){ document.getElementById("gate").style.display="none"; document.getElementById("app").style.display="block"; loadData(); }
+document.getElementById("pw").addEventListener("keydown",e=>{if(e.key==="Enter")tryLogin();});
+if(sessionStorage.getItem("dash_ok")==="1") openApp();
+
+async function gviz(q){
+  const u=SHEET_URL+"/gviz/tq?tqx=out:json&"+q+"&t="+Date.now();
+  const t=await (await fetch(u)).text();
+  const j=JSON.parse(t.substring(t.indexOf("{"),t.lastIndexOf("}")+1));
+  const cols=j.table.cols.map(c=>c.label||c.id);
+  return j.table.rows.map(r=>{const o={};(r.c||[]).forEach((cell,i)=>{let v=cell?cell.v:"";if(typeof v==="string"&&v.startsWith("Date(")&&cell.f)v=cell.f;o[cols[i]]=v;});return o;});
+}
+async function loadData(){
+  try{
+    const [posts,sales,deals]=await Promise.all([gviz("gid="+GIDS.posts),gviz("gid="+GIDS.sales),gviz("sheet=deals&headers=1")]);
+    DATA={posts,sales,deals};
+    localStorage.setItem(KEY,JSON.stringify(DATA));
+    document.getElementById("updated").textContent="обновлено "+new Date().toLocaleString("ru-RU")+" · из Google-таблицы";
+  }catch(e){
+    const c=localStorage.getItem(KEY); if(c)DATA=JSON.parse(c);
+    document.getElementById("updated").textContent="⚠ нет связи с таблицей — показан кэш";
+  }
+  render();
+}
+
+const money=n=>(+n||0).toLocaleString("ru-RU")+" ₽";
+const num=v=>+String(v).replace(/[^\d.-]/g,"")||0;
+const plur=(n,a,b,c)=>{n=Math.abs(n)%100;const d=n%10;if(n>10&&n<20)return c;if(d>1&&d<5)return b;if(d===1)return a;return c;};
+function pd(s){const m=String(s||"").match(/(\d{4})-(\d{2})-(\d{2})/);return m?new Date(+m[1],+m[2]-1,+m[3]):null;}
+const T=new Date(),T0=new Date(T.getFullYear(),T.getMonth(),T.getDate());
+const days=(a,b)=>Math.round((a-b)/864e5);
+const dm=d=>String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0");
+
+function render(){ rToday(); rFunnel(); rLadder(); rPipes(); rAssets();
+  document.getElementById("hdate").textContent=dm(T0); }
+
+/* 1. Сегодня — из deals */
+function rToday(){
+  const open=DATA.deals.filter(d=>d.contact&&!String(d.status||"").includes("закрыт"));
+  const hot=[],wait=[];
+  open.forEach(d=>{
+    const due=pd(d.due);
+    ((due&&due<=T0)||String(d.status).trim()==="новое")?hot.push(d):wait.push(d);
+  });
+  hot.sort((a,b)=>(pd(a.due)||T0)-(pd(b.due)||T0));
+  const row=(d,cls,dot)=>{
+    const due=pd(d.due),lt=pd(d.last_touch);
+    const hang=lt?`висит ${days(T0,lt)} дн`:"";
+    let chip="";
+    if(due){ chip=due<T0?`<span class="chip c-over">просрочено · ${dm(due)}</span>`
+      :days(due,T0)===0?`<span class="chip c-today">сегодня</span>`
+      :`<span class="chip c-soon">к ${dm(due)}</span>`; }
+    return `<div class="deal ${cls}"><div class="dot ${dot}"></div><div class="body">
+      <div class="who">${d.contact}</div>
+      <div class="act">${d.next_action||"—"}</div>
+      <div class="meta">${chip}${hang?`<span>${hang}</span>`:""}<span>${d.channel||""}</span></div></div></div>`;
+  };
+  let h=hot.map(d=>row(d,"","r")).join("");
+  if(!hot.length) h=`<div class="allgood">Горящих нет 🟢</div>`;
+  h+=wait.map(d=>row(d,"wait","y")).join("");
+  document.getElementById("today").innerHTML=h;
+}
+
+/* 2. Воронка деньгами — из posts */
+function agg(rows){return {
+  imp:rows.reduce((s,x)=>s+num(x.impressions),0), clk:rows.reduce((s,x)=>s+num(x.clicks),0),
+  led:rows.reduce((s,x)=>s+num(x.leads),0), sal:rows.reduce((s,x)=>s+num(x.sales),0),
+  rev:rows.reduce((s,x)=>s+num(x.revenue),0)};}
+function rFunnel(){
+  const all=agg(DATA.posts);
+  const w7=agg(DATA.posts.filter(p=>{const d=pd(p.date);return d&&days(T0,d)<7;}));
+  document.getElementById("hrev").textContent=money(all.rev);
+  document.getElementById("hsub").textContent=`${all.sal} ${plur(all.sal,"оплата","оплаты","оплат")} за всё время`;
+  document.getElementById("t-agg").innerHTML=
+    `<tr class="agg"><td>Всё время</td><td class="num">${all.imp.toLocaleString("ru-RU")}</td><td class="num">${all.clk}</td><td class="num">${all.led}</td><td class="num">${all.sal}</td><td class="num">${money(all.rev)}</td></tr>`+
+    `<tr><td>7 дней</td><td class="num">${w7.imp.toLocaleString("ru-RU")}</td><td class="num">${w7.clk}</td><td class="num">${w7.led}</td><td class="num">${w7.sal}</td><td class="num">${money(w7.rev)}</td></tr>`;
+  const top=[...DATA.posts].sort((a,b)=>(num(b.revenue)-num(a.revenue))||(num(b.impressions)-num(a.impressions)));
+  document.getElementById("t-top").innerHTML=top.map(p=>
+    `<tr><td class="t">${p.title||p.id}</td><td class="num">${num(p.impressions)}</td><td class="num">${num(p.clicks)}</td><td class="num">${num(p.sales)}</td><td class="num">${num(p.revenue)?money(p.revenue):"—"}</td></tr>`).join("");
+}
+
+/* 3. Лестница продуктов — конфиг из products.yaml (источник истины по ценам) + live из sales/deals */
+function rLadder(){
+  const trip=DATA.sales.filter(s=>String(s.product||"").toLowerCase().includes("аудит"));
+  const tn=trip.length, trev=trip.reduce((s,x)=>s+num(x.amount),0);
+  const od=DATA.deals.filter(d=>d.contact&&!String(d.status||"").includes("закрыт")&&((String(d.note||"")+String(d.next_action||"")).toLowerCase().includes("аудит"))).length;
+  const L=[
+    {tag:"Трипваер · маркетинг",nm:"«Аудит-конструктор воронки клиники»",pr:"4 990 ₽",
+     lv:`${tn} ${plur(tn,"продажа","продажи","продаж")} · ${money(trev)}`},
+    {tag:"Трипваер · команда",nm:"Курс по найму бизнес-ассистента",pr:"4 900 ₽",st:"активен · nikademia.ru/ba"},
+    {tag:"Программа",nm:"«Выведи клинику на новый уровень дохода за 4 месяца»",pr:"цена [уточнить]",st:"7 модулей · 4 месяца"},
+    {tag:"Консалтинг",nm:"«Удалённый операционный директор»",pr:"аудит 150 000 ₽ (полный 750 000 ₽) → 150–200 тыс ₽/мес, от 6 мес",
+     lv:od?`в работе: ${od} ${plur(od,"сделка","сделки","сделок")}`:null,st:od?null:"pipeline пуст"},
+    {tag:"Партнёрство",nm:"Инвестиционные партнёрства — открытие клиники с инвесторами",pr:"индивидуально",st:"через личку, не через канал"}
+  ];
+  document.getElementById("ladder").innerHTML=L.map((r,i)=>
+    `<div class="rung"><div class="n">${i+1}</div><div class="body">
+      <div class="tag">${r.tag}</div><div class="nm">${r.nm}</div><div class="pr">${r.pr}</div>
+      ${r.lv?`<div class="lv">${r.lv}</div>`:""}${r.st?`<div class="st">${r.st}</div>`:""}</div></div>`).join("");
+}
+
+/* 4. Трубы каналов — конфиг; у TG живые N постов → M продаж */
+function rPipes(){
+  const tg=DATA.posts.filter(p=>String(p.source)==="Telegram");
+  const ts=tg.reduce((s,x)=>s+num(x.sales),0);
+  const P=[
+    {ic:"✈️",nm:"Telegram",dot:"g",st:tg.length?`работает: ${tg.length} ${plur(tg.length,"пост","поста","постов")} → ${ts} ${plur(ts,"продажа","продажи","продаж")}`:"работает",nx:"апселл-цепочка покупателям"},
+    {ic:"📸",nm:"Instagram",dot:"y",st:"собран, не заряжен · 0,19 поста/нед",nx:"первый рилс + воронка «УСЛОВИЯ»"},
+    {ic:"🪞",nm:"VK + MAX",dot:"m",st:"зеркала, автопостинг",nx:"не вкладываться сверх зеркал"},
+    {ic:"🎤",nm:"Личный бренд",dot:"y",st:"Роман: старт 12.06, бриф к 15.06",nx:"бренд-платформа Роману"}
+  ];
+  document.getElementById("pipes").innerHTML=P.map(p=>
+    `<div class="card pipe"><div class="pn"><span>${p.ic}</span>${p.nm}<span class="dot ${p.dot}" style="margin-left:auto"></span></div>
+     <div class="ps">${p.st}</div><div class="nx">следующий шаг: <b>${p.nx}</b></div></div>`).join("");
+}
+
+/* 5. Карта активов */
+function rAssets(){
+  const A=[
+    ["📊","Дашборд воронки","./index.html"],
+    ["📋","Google-таблица воронки",SHEET_URL],
+    ["🎓","GetCourse","https://dentalb.getcourse.ru"],
+    ["🛒","Лендинг трипваера","https://course.nikademia.ru/audit-konstruktor"],
+    ["✈️","ТГ-канал @dental_business","https://t.me/dental_business"],
+    ["📈","Метрика","https://metrika.yandex.ru/dashboard?id=109643749"]
+  ];
+  document.getElementById("assets").innerHTML=A.map(a=>
+    `<a href="${a[2]}"${a[2].startsWith("http")?' target="_blank" rel="noopener"':""}><span>${a[0]}</span>${a[1]}<span class="arr">↗</span></a>`).join("");
+}
+</script>
+</body>
+</html>
