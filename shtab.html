@@ -157,6 +157,7 @@
     <a href="#s-pipes">🚇 Каналы</a>
     <a href="#s-skills">🤖 Скиллы</a>
     <a href="#s-links">🔗 Ссылки</a>
+    <a href="#s-clinics">🏥 Анализы клиник</a>
   </nav>
 
   <section id="s-today">
@@ -203,6 +204,12 @@
   <section id="s-links">
     <h2>Ссылки</h2>
     <div id="links"></div>
+  </section>
+
+  <section id="s-clinics">
+    <h2>Анализы клиник <span class="hd" id="clcount"></span></h2>
+    <div id="clinics"></div>
+    <div class="note">Разборы клиник и конкурентов (отдельные страницы-накопители). Список пополняется по мере разведки.</div>
   </section>
 </div>
 
@@ -259,7 +266,7 @@ const T=new Date(),T0=new Date(T.getFullYear(),T.getMonth(),T.getDate());
 const days=(a,b)=>Math.round((a-b)/864e5);
 const dm=d=>String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0");
 
-function render(){ rToday(); rTasks(); rFunnel(); rLadder(); rPipes(); rSkills(); rLinks();
+function render(){ rToday(); rTasks(); rFunnel(); rLadder(); rPipes(); rSkills(); rLinks(); rClinics();
   document.getElementById("hdate").textContent=dm(T0); }
 
 /* 1. Сегодня — из deals */
@@ -489,6 +496,28 @@ function rLinks(){
     `<div class="lcat">${esc(c)}</div><div class="lgrid">`+
     groups[c].map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener"><span class="ic">${ic[c]||"🔗"}</span><span class="lt">${esc(l["название"])}</span></a>`).join("")+
     `</div>`).join("")||`<div class="note">Ссылок нет.</div>`;
+}
+
+/* 8. Анализы клиник — Вариант A: статические ссылки на страницы-накопители разборов.
+   Структура под дозаполнение: добавляй строки в массив CLINICS (свои клиники / конкуренты). */
+function rClinics(){
+  const CLINICS=[
+    {nm:"Призматика (Казань)",role:"Конкурент",city:"Казань",
+     url:"https://720499.github.io/market-x9k3/",
+     note:"разбор машины загрузки без Директа + канал ПродокторОВ"},
+  ];
+  const roleCls=r=>{r=String(r||"").toLowerCase();return r.includes("конкур")?"r":r.includes("клиент")?"g":"m";};
+  document.getElementById("clcount").textContent=CLINICS.length?`${CLINICS.length} ${plur(CLINICS.length,"разбор","разбора","разборов")}`:"";
+  const body=CLINICS.map(c=>
+    `<a class="deal" href="${esc(c.url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+       <div class="dot ${roleCls(c.role)}"></div>
+       <div class="body">
+         <div class="who">${esc(c.nm)} <span style="font-weight:400;color:var(--mut);font-size:12.5px">↗</span></div>
+         <div class="act">${esc(c.note)||"—"}</div>
+         <div class="meta"><span class="chip c-soon">${esc(c.role)}</span><span>${esc(c.city)}</span></div>
+       </div></a>`).join("")
+    ||`<div class="allgood">Разборов пока нет 🟢</div>`;
+  document.getElementById("clinics").innerHTML=`<div class="card">${body}</div>`;
 }
 </script>
 </body>
