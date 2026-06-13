@@ -312,12 +312,19 @@ function agg(rows){return {
   rev:rows.reduce((s,x)=>s+num(x.revenue),0)};}
 function rFunnel(){
   const all=agg(DATA.posts);
-  const w7=agg(DATA.posts.filter(p=>{const d=pd(p.date);return d&&days(T0,d)<7;}));
-  document.getElementById("hrev").textContent=money(all.rev);
-  document.getElementById("hsub").textContent=`${all.sal} ${plur(all.sal,"оплата","оплаты","оплат")} за всё время`;
+  const w7p=agg(DATA.posts.filter(p=>{const d=pd(p.date);return d&&days(T0,d)<7;}));
+  /* Канон продаж = вкладка sales (как в дашборде index.html): вкл. прямые продажи без
+     привязки к посту (ВК/личка). Раньше headline брался из posts.revenue и недосчитывал
+     прямые → рассинхрон с дашбордом (4/19960 vs 5/24950). Принцип: одна метрика = один источник. */
+  const sRev=DATA.sales.reduce((s,x)=>s+num(x.amount),0), sCnt=DATA.sales.length;
+  const s7=DATA.sales.filter(x=>{const d=pd(x.date);return d&&days(T0,d)<7;});
+  const sRev7=s7.reduce((s,x)=>s+num(x.amount),0), sCnt7=s7.length;
+  const direct=sCnt-all.sal;
+  document.getElementById("hrev").textContent=money(sRev);
+  document.getElementById("hsub").textContent=`${sCnt} ${plur(sCnt,"оплата","оплаты","оплат")} за всё время`+(direct>0?` · ${all.sal} с постов + ${direct} прям${plur(direct,"ая","ые","ых")} (ВК/личка)`:"");
   document.getElementById("t-agg").innerHTML=
-    `<tr class="agg"><td>Всё время</td><td class="num">${all.imp.toLocaleString("ru-RU")}</td><td class="num">${all.clk}</td><td class="num">${all.led}</td><td class="num">${all.sal}</td><td class="num">${money(all.rev)}</td></tr>`+
-    `<tr><td>7 дней</td><td class="num">${w7.imp.toLocaleString("ru-RU")}</td><td class="num">${w7.clk}</td><td class="num">${w7.led}</td><td class="num">${w7.sal}</td><td class="num">${money(w7.rev)}</td></tr>`;
+    `<tr class="agg"><td>Всё время</td><td class="num">${all.imp.toLocaleString("ru-RU")}</td><td class="num">${all.clk}</td><td class="num">${all.led}</td><td class="num">${sCnt}</td><td class="num">${money(sRev)}</td></tr>`+
+    `<tr><td>7 дней</td><td class="num">${w7p.imp.toLocaleString("ru-RU")}</td><td class="num">${w7p.clk}</td><td class="num">${w7p.led}</td><td class="num">${sCnt7}</td><td class="num">${money(sRev7)}</td></tr>`;
   const top=[...DATA.posts].sort((a,b)=>(num(b.revenue)-num(a.revenue))||(num(b.impressions)-num(a.impressions)));
   document.getElementById("t-top").innerHTML=top.map(p=>
     `<tr><td class="t">${esc(p.title||p.id)}</td><td class="num">${num(p.impressions)}</td><td class="num">${num(p.clicks)}</td><td class="num">${num(p.sales)}</td><td class="num">${num(p.revenue)?money(p.revenue):"—"}</td></tr>`).join("");
