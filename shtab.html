@@ -64,6 +64,28 @@
   .task .nt{font-size:12px;color:var(--mut)}
   .toggle{width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);color:var(--teal-d);font-weight:600;font-size:13px;padding:12px 15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
   .toggle .cnt{color:var(--mut);font-weight:500}
+  /* — Потоки (аккордеоны с прогрессом) — */
+  .flow{margin-bottom:11px}
+  .flow.hot{box-shadow:0 0 0 1.5px rgba(239,68,68,.35),var(--sh)}
+  .fhead{width:100%;text-align:left;background:none;border:0;padding:13px 15px 12px;cursor:pointer;display:flex;flex-direction:column;gap:8px}
+  .fhead .ln{display:flex;align-items:center;gap:9px}
+  .fhead .ic{font-size:16px;flex:none}
+  .fhead .nm{font-weight:800;font-size:15.5px;flex:1;min-width:0}
+  .fhead .frac{font-variant-numeric:tabular-nums;font-weight:700;font-size:13px;color:var(--teal-d);white-space:nowrap}
+  .fhead .alert{flex:none;background:#FEE2E2;color:#991B1B;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px}
+  .fhead .chev{flex:none;color:var(--mut);font-size:12px;transition:transform .18s}
+  .flow.collapsed .chev{transform:rotate(-90deg)}
+  .bar{height:7px;border-radius:999px;background:rgba(127,127,127,.16);overflow:hidden}
+  .bar > i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--teal),var(--teal-d));transition:width .35s}
+  .bar.done > i{background:var(--green)}
+  .fbody{border-top:1px solid var(--line)}
+  .flow.collapsed .fbody{display:none}
+  /* — Принципы (памятка, вне прогресса) — */
+  .princ{display:flex;gap:11px;padding:11px 15px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .princ:last-child{border-bottom:0}
+  .princ .pi{flex:none;margin-top:1px;color:var(--navy2);font-size:14px}
+  .princ .pt{font-size:13.5px;line-height:1.4;color:var(--ink)}
+  .princ .pn{font-size:12px;color:var(--mut);margin-top:2px}
   /* — Скиллы — */
   .skill{display:flex;gap:11px;padding:11px 15px;border-bottom:1px solid var(--line);align-items:flex-start}
   .skill:last-child{border-bottom:0}
@@ -143,9 +165,9 @@
   </section>
 
   <section id="s-tasks">
-    <h2>Задачи <span class="hd" id="tcount"></span></h2>
-    <div class="card tasks" id="tasks"></div>
-    <div class="note">Ведётся руками в таблице «Штаб» → вкладка <b>задачи</b>. Штаб подхватывает сам.</div>
+    <h2>Задачи по потокам <span class="hd" id="tcount"></span></h2>
+    <div class="tasks" id="tasks"></div>
+    <div class="note">Сгруппированы по колонке <b>поток</b> вкладки <b>задачи</b> таблицы «Штаб». Горящие потоки — сверху. Штаб подхватывает сам.</div>
   </section>
 
   <section id="s-funnel">
@@ -267,23 +289,43 @@ function rToday(){
   document.getElementById("today").innerHTML=h;
 }
 
-/* 2. Задачи — из вкладки `задачи` Штаб-таблицы */
+/* 2. Задачи — из вкладки `задачи` Штаб-таблицы, СГРУППИРОВАНЫ ПО ПОТОКАМ */
 function statusKind(s){
   s=String(s||"").toLowerCase();
+  if(s.includes("принцип")) return "princ";       // памятка-правило, вне прогресса
   if(s.includes("done")||s.includes("готов")||s.includes("сделан")) return "done";
   if(s.includes("todo")||s.includes("вопрос")) return "todo";
   return "wait"; // ждёт / в работе / ждём ответ / ждёт go и т.п.
 }
+/* Иконка + порядок отображения потоков. Незнакомый поток → «Операционка». */
+const FLOW_META={
+  "Сделки":{ic:"🤝",ord:1},
+  "Воронка-продажи":{ic:"💰",ord:2},
+  "Контент-рилсы":{ic:"🎬",ord:3},
+  "БЗ-архитектура":{ic:"🧠",ord:4},
+  "Разведка":{ic:"🔭",ord:5},
+  "Премортем-стратегия":{ic:"♟️",ord:6},
+  "Операционка":{ic:"⚙️",ord:7},
+};
 function rTasks(){
   const rows=DATA.tasks.filter(t=>String(t["задача"]||"").trim());
-  const active=[],done=[];
-  rows.forEach(t=>(statusKind(t["статус"])==="done"?done:active).push(t));
+  /* — Принципы (статус «принцип») выносим в отдельную памятку, не в прогресс — */
+  const principles=rows.filter(t=>statusKind(t["статус"])==="princ");
+  const work=rows.filter(t=>statusKind(t["статус"])!=="princ");
+
+  /* группировка по потоку */
+  const flows={};
+  work.forEach(t=>{
+    const f=String(t["поток"]||"Операционка").trim()||"Операционка";
+    (flows[f]=flows[f]||[]).push(t);
+  });
+
   const taskRow=(t,isDone)=>{
     const k=statusKind(t["статус"]);
     const due=pd(t["дедлайн"]);
     const over=due&&!isDone&&due<T0;
     let dueHtml="";
-    if(due){ dueHtml=`<span class="due${over?" over":""}">${over?"⏰ просрочен":"до"} ${dm(due)}</span>`; }
+    if(due&&!isDone){ dueHtml=`<span class="due${over?" over":""}">${over?"⏰ просрочен":"до"} ${dm(due)}</span>`; }
     const nt=String(t["примечание"]||"").trim();
     return `<div class="task${isDone?" is-done":""}"><div class="mk ${k}"></div><div class="body">
       <div class="ttl">${esc(t["задача"])}</div>
@@ -293,16 +335,73 @@ function rTasks(){
         ${nt?`<span class="nt">· ${esc(nt)}</span>`:""}
       </div></div></div>`;
   };
-  let h="";
-  if(active.length){ h+=`<div class="grp">В работе · ${active.length}</div>`; h+=active.map(t=>taskRow(t,false)).join(""); }
-  else h+=`<div class="allgood">Активных задач нет 🟢</div>`;
-  if(done.length){
-    h+=`<button class="toggle" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.cnt').textContent=(this.nextElementSibling.style.display==='block'?'скрыть':'показать')">
-      <span>✅ Выполненные</span><span class="cnt">показать · ${done.length}</span></button>`;
-    h+=`<div style="display:none">${done.map(t=>taskRow(t,true)).join("")}</div>`;
+
+  /* собрать карточку одного потока */
+  const flowCard=(name,items)=>{
+    const total=items.length;
+    const doneArr=items.filter(t=>statusKind(t["статус"])==="done");
+    const activeArr=items.filter(t=>statusKind(t["статус"])!=="done");
+    const doneN=doneArr.length;
+    const pct=total?Math.round(doneN/total*100):0;
+    const allDone=doneN===total;
+    /* горящие: просроченный активный дедлайн ИЛИ статус-вопрос */
+    const burning=activeArr.filter(t=>{
+      const due=pd(t["дедлайн"]); const k=statusKind(t["статус"]);
+      return (due&&due<T0)||k==="todo"&&String(t["статус"]).toLowerCase().includes("вопрос");
+    });
+    const overdue=activeArr.some(t=>{const d=pd(t["дедлайн"]);return d&&d<T0;});
+    const meta=FLOW_META[name]||{ic:"📌",ord:50};
+    /* активные сверху, выполненные — под «показать ✓» */
+    const collapsed=allDone?" collapsed":""; // полностью закрытые потоки свёрнуты целиком
+    let inner=activeArr.map(t=>taskRow(t,false)).join("");
+    if(!activeArr.length) inner=`<div class="allgood" style="font-size:13px;padding:13px 15px">Поток закрыт 🟢</div>`;
+    if(doneN){
+      inner+=`<button class="toggle" onclick="const b=this.nextElementSibling;const o=b.style.display==='block';b.style.display=o?'none':'block';this.querySelector('.cnt').textContent=(o?'показать ✓ · ':'скрыть · ')+${doneN}">
+        <span>✅ Выполненные в потоке</span><span class="cnt">показать ✓ · ${doneN}</span></button>`;
+      inner+=`<div style="display:none">${doneArr.map(t=>taskRow(t,true)).join("")}</div>`;
+    }
+    const alert=overdue?`<span class="alert">⏰ просрочка</span>`:(burning.length&&!overdue?`<span class="alert">${burning.length} ❓</span>`:"");
+    return {overdue,burning:burning.length,allDone,ord:meta.ord,
+      html:`<div class="card flow${collapsed}${(overdue||burning.length)?" hot":""}">
+        <button class="fhead" onclick="this.parentNode.classList.toggle('collapsed')">
+          <div class="ln"><span class="ic">${meta.ic}</span><span class="nm">${esc(name)}</span>
+            ${alert}<span class="frac">${doneN}/${total} ✓</span><span class="chev">▾</span></div>
+          <div class="bar${allDone?" done":""}"><i style="width:${pct}%"></i></div>
+        </button>
+        <div class="fbody">${inner}</div>
+      </div>`};
+  };
+
+  /* порядок: горящие (просрочка/вопрос) сверху, затем по ord; полностью закрытые — в самый низ */
+  const cards=Object.keys(flows).map(n=>flowCard(n,flows[n]));
+  cards.sort((a,b)=>{
+    const aHot=(a.overdue||a.burning)&&!a.allDone, bHot=(b.overdue||b.burning)&&!b.allDone;
+    if(aHot!==bHot) return aHot?-1:1;
+    if(a.allDone!==b.allDone) return a.allDone?1:-1; // закрытые вниз
+    return a.ord-b.ord;
+  });
+
+  let h=cards.map(c=>c.html).join("")||`<div class="card"><div class="allgood">Задач нет 🟢</div></div>`;
+
+  /* — Памятка: принципы (вне прогресса) — */
+  if(principles.length){
+    h+=`<div class="card flow" style="margin-top:14px">
+      <div class="fhead" style="cursor:default">
+        <div class="ln"><span class="ic">📜</span><span class="nm">Принципы</span>
+          <span class="frac" style="color:var(--mut)">памятка · ${principles.length}</span></div>
+      </div>
+      <div class="fbody">${principles.map(t=>{
+        const nt=String(t["примечание"]||"").trim();
+        return `<div class="princ"><span class="pi">◆</span><div><div class="pt">${esc(String(t["задача"]).replace(/^ПРАВИЛО:?\s*/,""))}</div>${nt?`<div class="pn">${esc(nt)}</div>`:""}</div></div>`;
+      }).join("")}</div></div>`;
   }
   document.getElementById("tasks").innerHTML=h;
-  document.getElementById("tcount").textContent=`${active.length} в работе · ${done.length} ${plur(done.length,"готова","готовы","готово")}`;
+
+  /* счётчик в шапке секции: всего активных / всего done по рабочим потокам */
+  const allDoneN=work.filter(t=>statusKind(t["статус"])==="done").length;
+  const allActiveN=work.length-allDoneN;
+  const flowN=Object.keys(flows).length;
+  document.getElementById("tcount").textContent=`${flowN} ${plur(flowN,"поток","потока","потоков")} · ${allActiveN} в работе · ${allDoneN} ✓`;
 }
 
 /* 3. Воронка деньгами — из posts */
