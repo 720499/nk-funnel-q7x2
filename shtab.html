@@ -851,7 +851,10 @@ function rClinics(){
   const CLINICS=[
     {nm:"Призматика (Казань)",role:"Конкурент",city:"Казань",
      url:"https://720499.github.io/market-x9k3/",
-     note:"разбор машины загрузки без Директа + канал ПродокторОВ"},
+     note:"разбор машины загрузки без Директа + канал ПроДокторов"},
+    {nm:"Аудит клиники: ПроДокторов",role:"Клиент",city:"Казань",
+     url:"https://89.207.255.238.sslip.io/pd-audit/",
+     note:"🔒 за паролем · баллы 730 + сравнение со скринами + что добрать (1·ПД 2·отзывы/реклама)"},
   ];
   const roleCls=r=>{r=String(r||"").toLowerCase();return r.includes("конкур")?"r":r.includes("клиент")?"g":"m";};
   document.getElementById("clcount").textContent=CLINICS.length?`${CLINICS.length} ${plur(CLINICS.length,"разбор","разбора","разборов")}`:"";
