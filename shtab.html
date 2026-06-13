@@ -855,6 +855,9 @@ function rClinics(){
     {nm:"Аудит клиники: ПроДокторов",role:"Клиент",city:"Казань",
      url:"https://89.207.255.238.sslip.io/pd-audit/",
      note:"🔒 за паролем · баллы 730 + сравнение со скринами + что добрать (1·ПД 2·отзывы/реклама)"},
+    {nm:"Разбор ПД: лидер vs клиент (обезличено)",role:"Конкурент",city:"Казань",
+     url:"https://720499.github.io/nk-funnel-q7x2/pd-audit-anon/",
+     note:"открытый, без пароля · А (лидер рынка) vs Б (клиент) · можно пересылать"},
   ];
   const roleCls=r=>{r=String(r||"").toLowerCase();return r.includes("конкур")?"r":r.includes("клиент")?"g":"m";};
   document.getElementById("clcount").textContent=CLINICS.length?`${CLINICS.length} ${plur(CLINICS.length,"разбор","разбора","разборов")}`:"";
