@@ -102,6 +102,23 @@
   .lgrid a .ic{flex:none}
   .lgrid a .lt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .lgrid a:active{transform:translateY(1px)}
+  /* — Источники данных (SA-каталог) — */
+  .scat{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700;margin:14px 0 7px;display:flex;align-items:baseline;gap:7px}
+  .scat:first-child{margin-top:0}
+  .scat .cn{font-weight:500;font-size:11px;color:var(--mut);text-transform:none;letter-spacing:0}
+  .src{display:flex;gap:11px;padding:11px 14px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .src:last-child{border-bottom:0}
+  .src .sb{flex:none;font-size:13px;margin-top:1px;width:18px;text-align:center}
+  .sa-ok{color:var(--green)}.sa-no{color:var(--red)}
+  .src .body{flex:1;min-width:0}
+  .src .nm{font-weight:700;font-size:14px;line-height:1.3;word-break:break-word}
+  .src .nm a{color:var(--ink);text-decoration:none}
+  .src .nm a:active{opacity:.6}
+  .src .mt{font-size:12px;color:var(--mut);margin-top:2px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .src .cl{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#EEF3F9;color:#13315C}
+  @media(prefers-color-scheme:dark){.src .cl{background:#16273D;color:#9FB6D6}}
+  .src .tabs{font-size:11.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+  .src .open{flex:none;color:var(--teal-d);font-size:12px;margin-top:1px;text-decoration:none;font-weight:700}
   /* — Воронка — */
   .hero{display:flex;align-items:baseline;gap:12px;padding:15px 16px 4px;flex-wrap:wrap}
   .hero .v{font-size:36px;font-weight:800;color:var(--teal-d);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -157,6 +174,7 @@
     <a href="#s-pipes">🚇 Каналы</a>
     <a href="#s-skills">🤖 Скиллы</a>
     <a href="#s-links">🔗 Ссылки</a>
+    <a href="#s-sources">🗄️ Источники данных</a>
     <a href="#s-clinics">🏥 Анализы клиник</a>
   </nav>
 
@@ -206,6 +224,12 @@
     <div id="links"></div>
   </section>
 
+  <section id="s-sources">
+    <h2>Источники данных (SA) <span class="hd" id="srccount"></span></h2>
+    <div id="sources"></div>
+    <div class="note">Google-таблицы с доступом у сервис-аккаунта дашбордов. Бейдж <span class="sa-ok">✅</span> — робот читает; <span class="sa-no">✗</span> — нужно расшарить роботу как читателя. Из вкладки <b>источники-данных</b> таблицы «Штаб». NDA-цифры в каталог не выносятся.</div>
+  </section>
+
   <section id="s-clinics">
     <h2>Анализы клиник <span class="hd" id="clcount"></span></h2>
     <div id="clinics"></div>
@@ -221,7 +245,7 @@ const GIDS={posts:479830602,sales:1183168611}; // deals — по имени ли
 /* Штаб (задачи/скиллы/ссылки) — отдельная таблица «Штаб Никадемии» */
 const SHTAB_ID="13xisJHEUstFLGQHANcb0hkEE8vXTOXfl3cO-y6leA2A";
 const KEY="shtab_voronka_cache";
-let DATA={posts:[],sales:[],deals:[],tasks:[],skills:[],links:[]};
+let DATA={posts:[],sales:[],deals:[],tasks:[],skills:[],links:[],sources:[]};
 
 function tryLogin(){ if(document.getElementById("pw").value===PASSWORD){sessionStorage.setItem("dash_ok","1");openApp();} else document.getElementById("gerr").textContent="Неверный пароль"; }
 function openApp(){ document.getElementById("gate").style.display="none"; document.getElementById("app").style.display="block"; loadData(); }
@@ -239,15 +263,16 @@ async function gviz(id,q){
 }
 async function loadData(){
   try{
-    const [posts,sales,deals,tasks,skills,links]=await Promise.all([
+    const [posts,sales,deals,tasks,skills,links,sources]=await Promise.all([
       gviz(SHEET_ID,"gid="+GIDS.posts),
       gviz(SHEET_ID,"gid="+GIDS.sales),
       gviz(SHEET_ID,"sheet=deals&headers=1"),
       gviz(SHTAB_ID,"sheet="+encodeURIComponent("задачи")+"&headers=1"),
       gviz(SHTAB_ID,"sheet="+encodeURIComponent("скиллы")+"&headers=1"),
       gviz(SHTAB_ID,"sheet="+encodeURIComponent("ссылки")+"&headers=1"),
+      gviz(SHTAB_ID,"sheet="+encodeURIComponent("источники-данных")+"&headers=1"),
     ]);
-    DATA={posts,sales,deals,tasks,skills,links};
+    DATA={posts,sales,deals,tasks,skills,links,sources};
     localStorage.setItem(KEY,JSON.stringify(DATA));
     document.getElementById("updated").textContent="обновлено "+new Date().toLocaleString("ru-RU")+" · из Google-таблиц";
   }catch(e){
@@ -266,7 +291,7 @@ const T=new Date(),T0=new Date(T.getFullYear(),T.getMonth(),T.getDate());
 const days=(a,b)=>Math.round((a-b)/864e5);
 const dm=d=>String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0");
 
-function render(){ rToday(); rTasks(); rFunnel(); rLadder(); rPipes(); rSkills(); rLinks(); rClinics();
+function render(){ rToday(); rTasks(); rFunnel(); rLadder(); rPipes(); rSkills(); rLinks(); rSources(); rClinics();
   document.getElementById("hdate").textContent=dm(T0); }
 
 /* 1. Сегодня — из deals */
@@ -496,6 +521,41 @@ function rLinks(){
     `<div class="lcat">${esc(c)}</div><div class="lgrid">`+
     groups[c].map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener"><span class="ic">${ic[c]||"🔗"}</span><span class="lt">${esc(l["название"])}</span></a>`).join("")+
     `</div>`).join("")||`<div class="note">Ссылок нет.</div>`;
+}
+
+/* 7b. Источники данных (SA-каталог) — из вкладки `источники-данных`, сгруппированы по категории.
+   Колонки: название | категория | клиника | SA-доступ | вкладки | ссылка. NDA-цифры в каталог не попадают. */
+function rSources(){
+  const rows=DATA.sources.filter(s=>String(s["название"]||"").trim());
+  const order=["финансы","маркетинг","операционка","управление","справочники"];
+  const icon={"финансы":"💰","маркетинг":"📣","операционка":"⚙️","управление":"🧭","справочники":"📇"};
+  const groups={};
+  rows.forEach(s=>{const c=String(s["категория"]||"прочее").trim();(groups[c]=groups[c]||[]).push(s);});
+  const cats=Object.keys(groups).sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib);});
+  const okN=rows.filter(s=>String(s["SA-доступ"]).includes("✅")).length;
+  const noN=rows.length-okN;
+  document.getElementById("srccount").textContent=rows.length?`${rows.length} ${plur(rows.length,"таблица","таблицы","таблиц")} · ${okN} ✅${noN?` · ${noN} ✗`:""}`:"";
+  const srcRow=s=>{
+    const ok=String(s["SA-доступ"]).includes("✅");
+    const url=String(s["ссылка"]||"").trim();
+    const nm=esc(s["название"]);
+    const nmHtml=url?`<a href="${esc(url)}" target="_blank" rel="noopener">${nm}</a>`:nm;
+    const clinic=String(s["клиника"]||"").trim();
+    const tabs=String(s["вкладки"]||"").trim();
+    return `<div class="src">
+      <span class="sb ${ok?"sa-ok":"sa-no"}" title="${ok?"робот читает":"расшарить роботу"}">${ok?"✅":"✗"}</span>
+      <div class="body">
+        <div class="nm">${nmHtml}</div>
+        <div class="mt">${clinic?`<span class="cl">${esc(clinic)}</span>`:""}${tabs?`<span class="tabs">${esc(tabs)}</span>`:`<span class="tabs" style="color:var(--red)">нет доступа — вкладки не прочитаны</span>`}</div>
+      </div>
+      ${url?`<a class="open" href="${esc(url)}" target="_blank" rel="noopener">↗</a>`:""}
+    </div>`;
+  };
+  const html=cats.map(c=>
+    `<div class="scat">${icon[c]||"🗄️"} ${esc(c)} <span class="cn">· ${groups[c].length}</span></div>`+
+    `<div class="card">${groups[c].map(srcRow).join("")}</div>`).join("")
+    ||`<div class="note" style="padding:14px 16px">Каталог пуст — заполни вкладку «источники-данных» в таблице «Штаб».</div>`;
+  document.getElementById("sources").innerHTML=html;
 }
 
 /* 8. Анализы клиник — Вариант A: статические ссылки на страницы-накопители разборов.
