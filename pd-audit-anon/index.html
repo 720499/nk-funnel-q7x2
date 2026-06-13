@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow"><title>Разбор клиники на ПроДокторов: лидер рынка vs клиника-клиент</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c-text:#1A1A1A; --c-body:#2C2C2C; --c-muted:#666666;
+    --c-bg:#FFFFFF; --c-accent:#0B1F3A; --c-hairline:#E5E5E5;
+    --c-rule:#CCCCCC; --c-ctx:#F7F7F7;
+    --c-red:#B23A2E; --c-redbg:#FBF2F0; --c-amber:#B5781F; --c-green:#2E6B3E;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0; background:var(--c-bg); color:var(--c-body);
+    font-family:'PT Sans',sans-serif; font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:860px; margin:0 auto; padding:0 24px;}
+  h1,h2,h3{font-family:'PT Serif',serif; color:var(--c-text); font-weight:700; letter-spacing:-0.01em;}
+  h1{font-size:34px; line-height:1.18; margin:0 0 14px;}
+  h2{font-size:25px; line-height:1.25; margin:0 0 6px;}
+  h3{font-size:18px; margin:0 0 6px;}
+  p{margin:0 0 14px;}
+  a{color:var(--c-accent); text-decoration:none; border-bottom:1px solid rgba(11,31,58,.25);}
+  a:hover{border-bottom-color:var(--c-accent);}
+  .eyebrow{font-family:'PT Sans',sans-serif; font-weight:700; font-size:12px; text-transform:uppercase;
+    letter-spacing:0.14em; color:var(--c-accent); margin:0 0 12px;}
+
+  header.hero{padding:64px 0 40px; border-bottom:1px solid var(--c-rule);}
+  .hero .meta{font-size:15px; color:var(--c-muted); margin:0;}
+  .hero .lead{font-size:18px; color:var(--c-body); margin:18px 0 0; max-width:720px;}
+  .hero .stamp{display:inline-block; margin-top:22px; font-size:14px; color:var(--c-muted);
+    border-left:2px solid var(--c-accent); padding:4px 0 4px 14px;}
+
+  /* tab navigation */
+  .tabnav{position:sticky; top:0; z-index:10; background:var(--c-bg); border-bottom:1px solid var(--c-rule);}
+  .tabnav button{appearance:none; background:none; border:none; cursor:pointer;
+    font-family:'PT Sans',sans-serif; font-weight:700; font-size:14px; letter-spacing:.01em;
+    color:var(--c-muted); padding:16px 4px; margin-right:28px; border-bottom:2.5px solid transparent;
+    transition:color .15s,border-color .15s; white-space:nowrap;}
+  .tabnav button:hover{color:var(--c-text);}
+  .tabnav button.active{color:var(--c-accent); border-bottom-color:var(--c-accent);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  section{padding:42px 0; border-bottom:1px solid var(--c-hairline);}
+  section:last-of-type{border-bottom:none;}
+  .lead-p{font-size:17px; color:var(--c-body); margin:0 0 22px; max-width:730px;}
+
+  ul.clean{list-style:none; margin:0; padding:0;}
+  ul.clean li{padding:14px 0; border-bottom:1px solid var(--c-hairline); display:flex; gap:16px;}
+  ul.clean li:last-child{border-bottom:none;}
+  ul.clean .n{font-family:'PT Serif',serif; font-weight:700; color:var(--c-accent); font-size:15px; min-width:128px;}
+  ul.clean .t{flex:1;} ul.clean .t b{color:var(--c-text);}
+
+  .tablewrap{overflow-x:auto; margin:0 -2px;}
+  table{width:100%; border-collapse:collapse; font-size:15px; min-width:560px;}
+  th,td{text-align:left; padding:11px 12px; border-bottom:1px solid var(--c-hairline); vertical-align:top;}
+  th{font-family:'PT Sans',sans-serif; font-weight:700; color:var(--c-text); font-size:12px;
+    text-transform:uppercase; letter-spacing:0.08em; border-bottom:1.5px solid var(--c-rule);}
+  td.s-strong{color:var(--c-accent); font-weight:700; white-space:nowrap;}
+  td.s-num{color:var(--c-text); font-weight:700; white-space:nowrap;}
+
+  /* source pills */
+  .src-pill{display:inline-block; font-family:'PT Sans',sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:.04em; padding:2px 8px; border-radius:10px; white-space:nowrap; vertical-align:middle;}
+  .src-mkt{background:#EAF0F7; color:#1E4C82;}
+  .src-parf{background:#EDF4EE; color:#2E6B3E;}
+  .src-vlad{background:#F4EFE6; color:#8A6314;}
+  .src-2{background:#E7F0E9; color:#1F5C30;}
+  .srcnote{font-size:13px; color:var(--c-muted); margin-top:4px;}
+
+  /* KPI bar */
+  .kpis{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin:6px 0 4px;}
+  .kpi{border:1px solid var(--c-hairline); border-radius:6px; padding:16px 18px;}
+  .kpi .big{font-family:'PT Serif',serif; font-weight:700; color:var(--c-accent); font-size:26px; line-height:1.1;}
+  .kpi .lbl{font-size:13px; color:var(--c-muted); text-transform:uppercase; letter-spacing:.06em; margin:4px 0 8px;}
+  .kpi .meta{font-size:13px; color:var(--c-body); margin:0;}
+
+  /* mechanics ranked bars */
+  .mech{margin:6px 0 4px;}
+  .mech-row{padding:13px 0; border-bottom:1px solid var(--c-hairline);}
+  .mech-row:last-child{border-bottom:none;}
+  .mech-head{display:flex; align-items:baseline; gap:10px; margin-bottom:6px;}
+  .mech-head .rank{font-family:'PT Serif',serif; font-weight:700; color:var(--c-muted); font-size:14px; min-width:22px;}
+  .mech-head .name{font-family:'PT Serif',serif; font-weight:700; color:var(--c-text); font-size:17px; flex:1;}
+  .mech-head .vol{font-size:12px; color:var(--c-muted); text-transform:uppercase; letter-spacing:.05em;}
+  .mech-track{height:10px; background:#EEF1F4; border-radius:5px; overflow:hidden; margin-bottom:7px;}
+  .mech-fill{height:100%; background:var(--c-accent); border-radius:5px;}
+  .mech-desc{font-size:14px; color:var(--c-body); margin:0;}
+
+  /* budget chart */
+  .chart{display:flex; align-items:flex-end; gap:14px; height:190px; margin:14px 0 6px; padding-top:10px;}
+  .chart .col{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;}
+  .chart .bar{width:64%; max-width:54px; background:var(--c-accent); border-radius:3px 3px 0 0;}
+  .chart .val{font-size:13px; font-weight:700; color:var(--c-text); margin-bottom:5px;}
+  .chart .lab{font-size:12px; color:var(--c-muted); margin-top:7px; text-align:center; line-height:1.3;}
+  .legend{font-size:14px; color:var(--c-muted); margin:2px 0 18px;}
+
+  /* red bottleneck block */
+  .danger{background:var(--c-redbg); border-left:3px solid var(--c-red); padding:22px 24px; margin:8px 0 0; border-radius:0 4px 4px 0;}
+  .danger .eyebrow{color:var(--c-red);} .danger h2{color:var(--c-red); margin-top:0;} .danger p:last-child{margin-bottom:0;}
+  .danger .pull{font-family:'PT Serif',serif; font-style:italic; font-size:20px; color:var(--c-text); margin:0 0 14px; line-height:1.35;}
+
+  .ctx{background:var(--c-ctx); border-left:3px solid var(--c-accent); padding:22px 24px; margin:8px 0 0;}
+  .ctx h2{margin-top:0;} .ctx p:last-child{margin-bottom:0;}
+
+  /* take-vs-beat two columns */
+  .cols2{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px;}
+  .card{border:1px solid var(--c-hairline); border-radius:6px; padding:18px 20px;}
+  .card.take{border-top:3px solid var(--c-green);}
+  .card.beat{border-top:3px solid var(--c-amber);}
+  .card h3{margin-bottom:10px;}
+  .card.take h3{color:var(--c-green);} .card.beat h3{color:var(--c-amber);}
+  .card ul{margin:0; padding-left:18px;} .card li{margin:0 0 9px; font-size:15px;} .card li:last-child{margin-bottom:0;}
+  .card li b{color:var(--c-text);}
+
+  .note-strong{margin-top:18px; font-size:15px; color:var(--c-muted);}
+  .note-strong b{color:var(--c-text);}
+
+  /* ── ПроДокторов dashboard helpers ── */
+  /* accumulator status badge on section headers */
+  .acc-badge{display:inline-block; font-family:'PT Sans',sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:11px;
+    background:#EEF1F4; color:var(--c-muted); vertical-align:middle; margin-left:10px;}
+  .acc-badge.live{background:#EDF4EE; color:var(--c-green);}
+  .acc-badge.gap{background:var(--c-redbg); color:var(--c-red);}
+  /* detector / fact cards grid */
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:6px 0 4px;}
+  .factcard{border:1px solid var(--c-hairline); border-radius:6px; padding:16px 18px;}
+  .factcard h3{font-size:15px; margin:0 0 8px;}
+  .factcard p{font-size:14px; color:var(--c-body); margin:0;}
+  .factcard p.s{font-size:13px; color:var(--c-muted); margin:8px 0 0;}
+  /* numbered detector list with strong marker */
+  ul.detect{list-style:none; margin:6px 0 0; padding:0;}
+  ul.detect li{padding:13px 0; border-bottom:1px solid var(--c-hairline); display:flex; gap:14px; align-items:baseline;}
+  ul.detect li:last-child{border-bottom:none;}
+  ul.detect .marker{font-family:'PT Serif',serif; font-weight:700; color:var(--c-accent); font-size:14px;
+    min-width:26px; text-align:center;}
+  ul.detect .d{flex:1; font-size:15px;} ul.detect .d b{color:var(--c-text);}
+  /* pull quote inside neutral context */
+  .quote-block{border-left:3px solid var(--c-accent); padding:4px 0 4px 16px; margin:0 0 18px;
+    font-family:'PT Serif',serif; font-style:italic; font-size:17px; color:var(--c-text);}
+  /* fill / placeholder row for accumulator */
+  .fill-row{border:1px dashed var(--c-rule); border-radius:6px; padding:14px 16px; margin-top:14px;
+    font-size:14px; color:var(--c-muted);}
+  .fill-row b{color:var(--c-body);}
+  /* two-layer review split */
+  .review-split{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px;}
+  /* risk list (red, against blind bet on the channel) */
+  ul.risks{list-style:none; margin:6px 0 0; padding:0;}
+  ul.risks li{padding:14px 0; border-bottom:1px solid var(--c-hairline);}
+  ul.risks li:last-child{border-bottom:none;}
+  ul.risks .rt{font-family:'PT Serif',serif; font-weight:700; color:var(--c-red); font-size:16px; margin:0 0 3px;}
+  ul.risks .rd{font-size:15px; color:var(--c-body); margin:0;} ul.risks .rd b{color:var(--c-text);}
+  /* two-battle cards for top-1 */
+  .battle{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:6px 0 4px;}
+  .battle .card h3{margin-bottom:8px;}
+  /* sources block */
+  .sources{border-top:2px solid var(--c-rule); margin-top:10px; padding-top:18px;}
+  .sources h3{font-size:15px; text-transform:uppercase; letter-spacing:.08em;
+    font-family:'PT Sans',sans-serif; color:var(--c-muted); margin:0 0 12px;}
+  ul.srclist{list-style:none; margin:0; padding:0; columns:1;}
+  ul.srclist li{padding:7px 0; border-bottom:1px solid var(--c-hairline); font-size:14px; line-height:1.5;}
+  ul.srclist li:last-child{border-bottom:none;}
+  ul.srclist .cat{font-family:'PT Sans',sans-serif; font-weight:700; color:var(--c-accent);
+    font-size:12px; text-transform:uppercase; letter-spacing:.05em; display:inline-block; min-width:104px; vertical-align:top;}
+  ul.srclist .lk{display:inline-block;}
+  ul.srclist a{font-size:14px;}
+  @media (max-width:600px){ .grid2,.review-split,.battle{grid-template-columns:1fr;}
+    ul.srclist .cat{display:block; min-width:0; margin-bottom:2px;} }
+
+  /* ── Алгоритм: пошаговый flow ── */
+  .flow{margin:10px 0 0;}
+  .step{display:flex; gap:20px; padding:0 0 6px; position:relative;}
+  .step .num-col{display:flex; flex-direction:column; align-items:center; flex:0 0 auto;}
+  .step .num{font-family:'PT Serif',serif; font-weight:700; font-size:18px; color:#fff;
+    background:var(--c-accent); width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
+  .step .connector{width:2px; flex:1; background:var(--c-hairline); margin:6px 0;}
+  .step:last-child .connector{display:none;}
+  .step .body{flex:1; padding:0 0 30px;}
+  .step:last-child .body{padding-bottom:6px;}
+  .step h3{font-size:19px; margin:6px 0 8px;}
+  .step .body > p{font-size:15px; color:var(--c-body); margin:0 0 12px;}
+  .step .body > p:last-child{margin-bottom:0;}
+  .step .body b{color:var(--c-text);}
+  /* mini two-col inside a step (doctor / clinic) */
+  .step-2{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:4px 0 0;}
+  .mini{border:1px solid var(--c-hairline); border-radius:6px; padding:14px 16px;}
+  .mini h4{font-family:'PT Serif',serif; font-weight:700; font-size:15px; margin:0 0 7px; color:var(--c-text);}
+  .mini p{font-size:14px; color:var(--c-body); margin:0;}
+  /* foundation highlight callout inside a step */
+  .foundation{background:var(--c-ctx); border-left:3px solid var(--c-accent);
+    padding:14px 16px; border-radius:0 4px 4px 0; margin:4px 0 0;}
+  .foundation p{font-size:15px; margin:0;}
+  .foundation .big-pct{font-family:'PT Serif',serif; font-weight:700; color:var(--c-accent);}
+  /* pill labels (two contracts / two invoices) */
+  .pills{display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 0;}
+  .pill-lbl{display:inline-block; font-family:'PT Sans',sans-serif; font-weight:700; font-size:12px;
+    letter-spacing:.03em; padding:5px 12px; border-radius:14px; border:1px solid var(--c-accent);
+    color:var(--c-accent); background:#fff;}
+  /* checklist inside a step */
+  ul.check{list-style:none; margin:6px 0 0; padding:0;}
+  ul.check li{padding:7px 0 7px 26px; position:relative; font-size:15px; color:var(--c-body); border-bottom:1px solid var(--c-hairline);}
+  ul.check li:last-child{border-bottom:none;}
+  ul.check li:before{content:"✓"; position:absolute; left:0; top:7px; color:var(--c-green); font-weight:700;}
+  ul.check li b{color:var(--c-text);}
+  .lk-closed{color:var(--c-amber); font-weight:700; font-size:13px; white-space:nowrap;}
+  @media (max-width:600px){ .step-2{grid-template-columns:1fr;}
+    .step{gap:14px;} .step .num{width:36px; height:36px; font-size:16px;} }
+
+  /* ── Карта материалов (навигатор «где что лежит») ── */
+  .maprow{display:grid; grid-template-columns:1fr; gap:14px; margin:6px 0 4px;}
+  .mapcard{border:1px solid var(--c-hairline); border-radius:6px; padding:18px 20px;}
+  .mapcard.web{border-left:3px solid var(--c-accent);}
+  .mapcard.repo{border-left:3px solid var(--c-green);}
+  .mapcard.lk{border-left:3px solid var(--c-red);}
+  .mapcard.skill{border-left:3px solid var(--c-amber);}
+  .mapcard h3{font-size:17px; margin:0 0 4px;}
+  .mapcard .where{font-size:13px; color:var(--c-muted); margin:0 0 12px;}
+  .mapcard .where b{color:var(--c-body);}
+  ul.maplist{list-style:none; margin:0; padding:0;}
+  ul.maplist li{padding:11px 0; border-bottom:1px solid var(--c-hairline); display:flex; gap:14px; align-items:baseline;}
+  ul.maplist li:last-child{border-bottom:none;}
+  ul.maplist .what{font-family:'PT Serif',serif; font-weight:700; color:var(--c-text); font-size:15px; flex:0 0 38%; max-width:38%;}
+  ul.maplist .for{flex:1; font-size:14px; color:var(--c-body);}
+  ul.maplist code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12.5px;
+    background:var(--c-ctx); padding:1px 5px; border-radius:3px; color:var(--c-text); word-break:break-word;}
+  .map-note{font-size:13px; color:var(--c-muted); margin-top:14px;}
+  .map-note b{color:var(--c-body);}
+  .nda-flag{display:inline-block; font-family:'PT Sans',sans-serif; font-weight:700; font-size:10.5px;
+    letter-spacing:.05em; padding:2px 7px; border-radius:10px; background:var(--c-redbg); color:var(--c-red);
+    vertical-align:middle; margin-left:6px;}
+  @media (max-width:600px){
+    ul.maplist li{flex-direction:column; gap:3px;}
+    ul.maplist .what{flex-basis:auto; max-width:none;}
+  }
+
+  footer.sig{padding:34px 0 60px; color:var(--c-muted); font-size:14px;}
+  footer.sig b{color:var(--c-text); font-family:'PT Serif',serif;}
+
+  @media (max-width:600px){
+    body{font-size:16px;} h1{font-size:26px;} h2{font-size:21px;}
+    header.hero{padding:44px 0 30px;}
+    ul.clean li{flex-direction:column; gap:2px;} ul.clean .n{min-width:0;}
+    .kpis{grid-template-columns:1fr;} .cols2{grid-template-columns:1fr;}
+    .chart .lab{font-size:11px;}
+  }
+
+  .wrap-section{padding:42px 0; border-bottom:1px solid var(--c-hairline);}
+  .wrap-section:last-of-type{border-bottom:none;}
+  .shotgrid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:14px 0 6px;}
+  .shot{border:1px solid var(--c-hairline); border-radius:8px; overflow:hidden; background:#fff;}
+  .shot .shotcap{font-family:'PT Sans',sans-serif; font-weight:700; font-size:13px; color:var(--c-accent); padding:10px 14px; border-bottom:1px solid var(--c-hairline); background:var(--c-ctx);}
+  .shot img{display:block; width:100%; height:auto;}
+  .shot .shotnote, .shotbig .shotnote{font-size:13px; color:var(--c-body); margin:0; padding:11px 14px;}
+  .shot .shotnote{border-top:1px solid var(--c-hairline);}
+  .shotnote b{color:var(--c-text);}
+  .shotbig{margin:16px 0 6px; border:1px solid var(--c-hairline); border-radius:8px; overflow:hidden; background:#fff;}
+  .shotbig img{display:block; width:100%; height:auto;}
+  .shotbig .shotnote{border-top:1px solid var(--c-hairline); background:var(--c-ctx);}
+  @media (max-width:600px){ .shotgrid{grid-template-columns:1fr;} }
+</style></head><body>
+<header class="hero"><div class="wrap"><p class="eyebrow">Разбор клиники на ПроДокторов · обезличенный</p><h1>Лидер рынка vs клиника-клиент на ПроДокторов: где разрыв и что добрать</h1><p class="lead">Обезличенный разбор: лидер рынка (Клиника А) рядом с клиникой-клиентом (Клиника Б) на ПроДокторов, плюс две клиники одной сети (В и Г) как фон. Что считывает пациент в момент выбора, какие баллы лежат недобранными и в каком порядке их забирать.</p><span class="stamp">Обезличенный разбор: лидер рынка (А) vs клиника-клиент (Б) на ПроДокторов. Имена клиник, адреса и операционные данные скрыты в коды; публичные метрики — снимок с открытых карточек prodoctorov.ru на дату.</span></div></header>
+<nav class="tabnav"><div class="wrap" style="display:flex; gap:0;"><button id="tab-btn-cmp" class="active" onclick="showTab('cmp')">⚖️ Сравнение</button><button id="tab-btn-audit" onclick="showTab('audit')">📋 Что добрать</button><button id="tab-btn-algo" onclick="showTab('algo')">🗺️ Алгоритм со скринами</button></div></nav>
+<div id="tab-cmp" class="tab-panel active">
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Где Клиника Б стоит сейчас · карточки клиник рядом</p>
+    <h2>Одна звезда у всех — а карточки разные. Смотрим рядом</h2>
+    <p class="lead-p">У Клиники А (лидер), Клиники Б и обеих клиник сети В+Г на ПроДокторов одинаковая звезда — 5.0. Потолок. Значит решает не рейтинг (он у всех уже на максимуме), а две другие вещи: <b>объём свежих отзывов</b> и <b>ширина карточки</b> — сколько врачей, есть ли видеовизитка, бейдж «Выбор пациентов», блок акций. Честно: карточка Клиники А сейчас заряжена сильнее карточки Клиники Б. Но это не врождённое преимущество и не талант — это собранная процессом машина (системный сбор отзывов + полная обвязка карточки). Раз собирается процессом — значит догоняемо.</p>
+    <p class="srcnote">Это разбор для самой Клиники Б: показаны её собственные публичные данные рядом с лидером рынка и двумя клиниками сети В+Г. Все числа в таблице ниже — с <b>публичных карточек prodoctorov.ru</b> (видны любому посетителю). Числа из личного кабинета (баллы, ставки) на этой странице не используются.</p>
+  </div>
+</section>
+
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Таблица · публичные карточки рядом</p>
+    <h2>Клиника А vs Клиника Б vs сеть В+Г — по публичным метрикам</h2>
+    <p class="lead-p">Только то, что видно на открытых карточках ПроДокторов. Последняя колонка — где именно карточка Клиники А заряжена сильнее и это считывает пациент в момент выбора.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Параметр</th>
+            <th>Клиника А<br>(лидер)</th>
+            <th>Клиника Б<br>(ваша)</th>
+            <th>Клиника В</th>
+            <th>Клиника Г</th>
+            <th>Где Клиника А лучше</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="s-strong">Рейтинг</td>
+            <td class="s-num">5.0</td>
+            <td class="s-num">5.0</td>
+            <td class="s-num">5.0</td>
+            <td class="s-num">5.0</td>
+            <td>паритет — потолок у всех</td>
+          </tr>
+          <tr>
+            <td class="s-strong">Отзывов</td>
+            <td class="s-num">1601</td>
+            <td class="s-num">350</td>
+            <td class="s-num">359</td>
+            <td class="s-num">155</td>
+            <td><b>×4,5 к Клинике Б</b> — главный разрыв соцпруфа</td>
+          </tr>
+          <tr>
+            <td class="s-strong">Врачей в карточке</td>
+            <td class="s-num">32</td>
+            <td class="s-num">14</td>
+            <td class="s-num">21</td>
+            <td class="s-num">7</td>
+            <td><b>больше всех</b> — шире охват специальностей, больше точек входа</td>
+          </tr>
+          <tr>
+            <td class="s-strong">Медали премии</td>
+            <td class="s-num">9</td>
+            <td class="s-num">1</td>
+            <td class="s-num">10</td>
+            <td class="s-num">2</td>
+            <td>витрина доверия в шапке (у Клиники Б — одна, 2020 г.)</td>
+          </tr>
+          <tr>
+            <td class="s-strong">Бейдж «Выбор пациентов 2025»</td>
+            <td class="s-num">✅</td>
+            <td class="s-num">❌</td>
+            <td class="s-num">✅</td>
+            <td class="s-num">❌</td>
+            <td>у Клиники Б нет → Клиника А визуально «премия года»</td>
+          </tr>
+          <tr>
+            <td class="s-strong">Видеовизитка</td>
+            <td class="s-num">✅</td>
+            <td class="s-num">❌</td>
+            <td class="s-num">✅</td>
+            <td class="s-num">✅</td>
+            <td>у Клиники Б нет → теряет +10 баллов и лицо клиники в карточке</td>
+          </tr>
+          <tr>
+            <td class="s-strong">Акции</td>
+            <td class="s-num">✅</td>
+            <td class="s-num">✅</td>
+            <td class="s-num">✅</td>
+            <td class="s-num">✅</td>
+            <td>паритет</td>
+          </tr>
+          <tr>
+            <td class="s-strong">Цен-позиций в прайсе</td>
+            <td class="s-num">339</td>
+            <td class="s-num">297</td>
+            <td class="s-num">86</td>
+            <td class="s-num">89</td>
+            <td>полнее прайс → больше входов из поиска услуги</td>
+          </tr>
+          <tr>
+            <td class="s-strong">Фото в карточке</td>
+            <td class="s-num">28</td>
+            <td class="s-num">19</td>
+            <td class="s-num">5</td>
+            <td class="s-num">4</td>
+            <td>богаче визуальная витрина клиники</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="srcnote">Источник — публичные карточки prodoctorov.ru на 13.06.2026. Число отзывов на площадке нестабильно (дрейфует на несколько штук между шапкой карточки и каталогами) — берём снимок шапки на дату. Бейдж и видеовизитка — наличие/отсутствие в шапке карточки.</p>
+    <p class="note-strong"><b>Что видно из таблицы:</b> рейтинг у всех 5.0 — этим уже не выиграть. Клиника Б уступает Клинике А ровно по тем строкам, что собираются руками: отзывы, видеовизитка, бейдж, ширина прайса. По медалям Клиника В (10) даже опережает Клинику А (9) — то есть «9 медалей» это не магия лидера, а достижимый набор.</p>
+  </div>
+</section>
+
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Вывод · что сильнее и чем догнать</p>
+    <h2>Что у Клиники А сильнее — и какими рычагами Клиника Б догоняет</h2>
+    <p class="lead-p">Свести в две колонки: слева — где карточка Клиники А реально заряжена сильнее карточки Клиники Б, справа — конкретные рычаги, которыми Клиника Б это добирает. Ни один пункт слева не защищён патентом или эксклюзивом.</p>
+    <div class="cols2">
+      <div class="card take">
+        <h3>Что у Клиники А сильнее</h3>
+        <ul>
+          <li><b>Объём отзывов 1601 vs 350</b> — база соцпруфа в 4–5 раз плотнее, прирост ~100+/мес против рыночной нормы 10–15.</li>
+          <li><b>32 врача vs 14</b> — кратно больше карточек-специальностей и точек входа пациента в карточку.</li>
+          <li><b>Бейдж «Выбор пациентов 2025» + 9 медалей</b> — витрина доверия прямо в шапке; у Клиники Б одна медаль 2020 года.</li>
+          <li><b>Видеовизитка</b> — лицо клиники в карточке плюс +10 баллов ранжирования; у Клиники Б её нет.</li>
+        </ul>
+      </div>
+      <div class="card beat">
+        <h3>Рычаги Клиники Б догнать</h3>
+        <ul>
+          <li><b>Донастроить онлайн-запись и обвязку.</b> Запись у Клиники Б уже работает — добрать отдельную фичу «запись на услуги» и оставшихся врачей. Чистая настройка, без бюджета.</li>
+          <li><b>Запустить машину отзывов 350 → поток.</b> Скидка пациенту + сервисный обзвон + QR-полиграфия + шаблон с гео-ключами. Цель — выйти на поток и держать свежесть.</li>
+          <li><b>Снять видеовизитку.</b> Самый дешёвый и быстрый пункт: +10 баллов и лицо клиники в карточке.</li>
+          <li><b>Взять бейдж «Выбор пациентов».</b> Производная от потока отзывов и обвязки — собирается тем же процессом, что и у Клиники А (и у Клиники В он уже есть).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ctx" style="margin-top:24px;">
+      <p class="eyebrow">Главный вывод</p>
+      <p class="quote-block">Ничего из того, чем сильна карточка Клиники А, не уникально. Всё догоняемо машиной отзывов плюс полной обвязкой карточки.</p>
+      <p style="margin-bottom:0;">Отзывы набираются процессом, бейдж и медали — производные от того же потока и закрытой обвязки. Клинике Б, чтобы встать рядом, нужно добрать ровно две вещи: <b>обвязку карточки и поток отзывов</b>. Это вопрос дисциплины процесса, а не догоняющего бюджета — при том, что звезда (5.0) у Клиники Б уже на потолке.</p>
+    </div>
+    <p class="srcnote">Обезличенный разбор. Публичные числа лидера и клиник сети В+Г — с карточек prodoctorov.ru; разбивка баллов ранжирования и ставок аукциона (данные личного кабинета) на этой странице намеренно не показаны.</p>
+  </div>
+</section>
+</div>
+<div id="tab-audit" class="tab-panel">
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Разбор Клиники Б на ПроДокторов · что добрать</p>
+    <h2>Что добрать, чтобы догнать Клинику А — два фронта</h2>
+    <p class="lead-p">Это рабочий вывод всей страницы: чек-лист по карточке Клиники Б на ПроДокторов. Догоняем не бюджетом, а донастройкой. Разбор идёт по двум частям, ровно как они и работают: <b>первая</b> — баллы ранжирования и обвязка карточки (общий список, бесплатные резервы), <b>вторая</b> — отзывы и рекламное продвижение (соцпруф и аукцион денежных услуг). Все цифры по Клинике Б — обезличенный срез её показателей на ПроДокторов на 13 июня 2026.</p>
+  </div>
+</section>
+
+<!-- ════════ ЧАСТЬ 1 — БАЛЛЫ И ОБВЯЗКА КАРТОЧКИ ════════ -->
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Часть 1 · Анализ ПроДокторов: баллы и обвязка карточки</p>
+    <h2>Баллы Клиники Б — 371 из 730. Резерв лежит прямо сейчас</h2>
+    <p class="lead-p">Позиция в общем списке ПроДокторов на ~80% собирается баллами, и только ~20% — это звёзды. У Клиники Б звёзды на максимуме (5.0), но итог низкий: <b>371 из 730</b>. Тянет вниз не репутация, а недобранная обвязка карточки. Ниже — разбивка по факторам и что с каждым сделать.</p>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="big">371 / 730</div>
+        <div class="lbl">текущий балл Клиники Б</div>
+        <p class="meta">резерв 359 баллов лежит недобранным — при звёздах 5.0 и 8-й позиции в общем списке</p>
+      </div>
+      <div class="kpi">
+        <div class="big">до +188</div>
+        <div class="lbl">даёт одна донастройка записи</div>
+        <p class="meta">без единого рубля — это настройка карточки, не реклама</p>
+      </div>
+    </div>
+
+    <div class="ctx" style="margin-top:24px;">
+      <p class="eyebrow">Главное — не перепутать рычаг</p>
+      <p style="margin-bottom:0;"><b>Онлайн-запись у Клиники Б УЖЕ ВКЛЮЧЕНА И РАБОТАЕТ.</b> Проверено в ЛК 13.06: 14 из 14 врачей подключены к онлайн-записи, 72 из 72 услуги заведены, записи идут. Низкие баллы — НЕ из-за «выключенной записи». Рычаг — <b>ДОНАСТРОИТЬ обвязку</b> (отдельная фича «запись на услуги», цена первичного из МИС, Клуб, видеовизитки), а не «включить запись». Это разные вещи, и от этого зависит, куда направить руки.</p>
+    </div>
+
+    <h3 style="margin-top:34px;">Разбивка 371/730 по факторам</h3>
+    <p class="lead-p">«Сейчас» — что набрано, «потолок» — максимум за фактор, «что сделать» — конкретное действие в ЛК. Сортировка — по размеру лежащего резерва.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Фактор</th><th>Сейчас</th><th>Потолок</th><th>Что сделать</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Онлайн-запись на УСЛУГИ</b></td>
+            <td class="s-num" style="color:var(--c-red);">0</td>
+            <td class="s-num">100</td>
+            <td>Отдельная фича (запись на конкретную услугу, не к врачу) НЕ подключена. В ЛК есть кнопка <b>«Подключить»</b>. Самый крупный резерв — <b>+100</b> одним действием.</td>
+          </tr>
+          <tr>
+            <td>Автовыгрузка цен</td>
+            <td class="s-num" style="color:var(--c-red);">29</td>
+            <td class="s-num">100</td>
+            <td>Цена первичного приёма не тянется из МИС у 14/14 врачей (стоит 0 ₽). Починить выгрузку цены первичного из МИС → <b>+71</b>.</td>
+          </tr>
+          <tr>
+            <td>Клуб ПроДокторов</td>
+            <td class="s-num" style="color:var(--c-red);">0</td>
+            <td class="s-num">70</td>
+            <td>Выключен у 14/14 врачей. Подключить Клуб по профильным врачам → <b>+70</b>.</td>
+          </tr>
+          <tr>
+            <td>Онлайн-запись к врачам</td>
+            <td class="s-num" style="color:var(--c-amber);">12</td>
+            <td class="s-num">100</td>
+            <td>Запись к врачам работает, но балл считается по числу врачей с записью: <b>12 из 14</b> (1 балл/врач). Включить запись 2 оставшимся врачам.</td>
+          </tr>
+          <tr>
+            <td>Видеовизитка</td>
+            <td class="s-num" style="color:var(--c-red);">нет</td>
+            <td class="s-num">10</td>
+            <td>Нет у 10 из 14 врачей. Записать вертикальное видео 1–3 мин (руководитель представляется) — мелкий, но быстрый резерв.</td>
+          </tr>
+          <tr>
+            <td>Профиль лечения</td>
+            <td class="s-num" style="color:var(--c-amber);">не указан</td>
+            <td class="s-num">—</td>
+            <td>Не указан у 4 врачей. Заполнить — нужно и для корректного ранжирования по специальностям.</td>
+          </tr>
+          <tr>
+            <td>Успешность записи (30 дн)</td>
+            <td class="s-num">80</td>
+            <td class="s-num">100</td>
+            <td>−20 до потолка. Подтянуть долю успешных записей выше 90%.</td>
+          </tr>
+          <tr>
+            <td>Звёздный рейтинг ×30</td>
+            <td class="s-num" style="color:var(--c-green);">150</td>
+            <td class="s-num">150</td>
+            <td>На максимуме (5.0). Держать поток отзывов, чтобы вес не устаревал (см. Часть 2).</td>
+          </tr>
+          <tr>
+            <td>Запись по телефону</td>
+            <td class="s-num" style="color:var(--c-green);">50</td>
+            <td class="s-num">50</td>
+            <td>На максимуме.</td>
+          </tr>
+          <tr>
+            <td>Доступность ≥15 ч</td>
+            <td class="s-num" style="color:var(--c-green);">50</td>
+            <td class="s-num">50</td>
+            <td>На максимуме.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="srcnote">Источник разбивки: ЛК ПроДокторов Клиники Б (раздел «Ранжирование», 9 факторов), срез 13.06.2026 — обезличенный показатель.</p>
+
+    <!-- скрин ранжирования из ЛК (обезличенная версия — итог 371/730) -->
+    <div class="shotbig" style="margin-top:28px;">
+      <img loading="lazy" src="assets/lk/17_rank.png" alt="Панель «Баллы клиники» в ЛК ПроДокторов: разбивка 371/730 по 9 факторам ранжирования">
+      <p class="shotnote">Панель «Баллы клиники» в ЛК: видно, из чего собираются 730 баллов и где Клиника Б недобрала. Итог — <b>371/730</b> (обезличенный показатель Клиники Б).</p>
+    </div>
+
+    <h3 style="margin-top:38px;">Рычаги-приоритеты: от бесплатных к денежным</h3>
+    <p class="lead-p">Резервы выстроены по принципу «сначала то, что даёт максимум баллов без денег». Первые два шага почти бесплатны и поднимают Клинику Б с 371 в район ~700/730 — выше многих платных конкурентов.</p>
+    <div class="flow">
+      <div class="step">
+        <div class="num-col"><div class="num">1</div><div class="connector"></div></div>
+        <div class="body">
+          <h3>Донастройка онлайн-записи и обвязки — до +188 баллов</h3>
+          <p>Без денег, это настройка карточки. (а) Подключить отдельную фичу <b>«онлайн-запись на услуги» (0→100)</b> — в ЛК есть кнопка «Подключить»; (б) включить запись <b>2 оставшимся врачам (12→14)</b>. Шаг (а) переводит балл с 371 в район ~459, плюс мелкий прирост от (б). Самый дешёвый прирост в выборке.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num-col"><div class="num">2</div><div class="connector"></div></div>
+        <div class="body">
+          <h3>Клуб + видео + цены + профиль — ещё ~+150 баллов</h3>
+          <p>Включить <b>Клуб ПроДокторов (0→70)</b>, записать <b>видеовизитки</b> (нет у 10/14), починить <b>выгрузку цены первичного из МИС</b> по 14 врачам (автовыгрузка 29→100, +71), заполнить <b>профиль лечения</b> (не указан у 4). После шагов 1–2 Клиника Б — около ~700/730.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num-col"><div class="num">3</div><div class="connector"></div></div>
+        <div class="body">
+          <h3>Аукцион и врачи — системный трек</h3>
+          <p>Держать клинику стабильно в топ-3 (сейчас 2-е место, перебивают) и <b>включить ставки по остальным 4 врачам</b> (задействован 1 из 5) — расширить охват в денежных услугах. Подробно — в Части 2.</p>
+        </div>
+      </div>
+    </div>
+    <p class="note-strong" style="margin-top:18px;"><b>Приоритет Клиники Б:</b> донастройка записи и обвязки (~188 баллов, без денег) → Клуб + видео + цены + профиль (~150 баллов) → аукцион и врачи. Машина отзывов идёт параллельно как долгий трек (см. Часть 2).</p>
+  </div>
+</section>
+
+<!-- ════════ ЧАСТЬ 2 — ОТЗЫВЫ И РЕКЛАМНОЕ ПРОДВИЖЕНИЕ ════════ -->
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Часть 2 · Отзывы и рекламное продвижение</p>
+    <h2>Соцпруф и аукцион: где Клиника Б отстаёт от Клиники А и как сократить разрыв</h2>
+    <p class="lead-p">Вторая часть разбора — два рычага, которые не входят в чистый балл, но решают исход: <b>поток отзывов</b> (глубина и свежесть социального доказательства) и <b>рекламное продвижение</b> (аукцион спецразмещения в денежных услугах). Клиника А выигрывает именно здесь, и оба фронта догоняемы.</p>
+
+    <!-- ОТЗЫВЫ -->
+    <h3 style="margin-top:28px;">Отзывы: 350 против 1601 у Клиники А</h3>
+    <p class="lead-p">Звёзды у обеих 5.0 — решает не звезда, а ПОТОК свежих отзывов (вес отзыва на ПроДокторов устаревает за ~6 месяцев). У Клиники А база соцпруфа в 4,5 раза плотнее, и она прирастает на ~100+ отзывов в месяц против рыночной нормы 10–15.</p>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="big">350</div>
+        <div class="lbl">отзывов у Клиники Б</div>
+        <p class="meta">в ЛК: ~399 опубликованных + 39 на проверке</p>
+      </div>
+      <div class="kpi">
+        <div class="big">~1 601</div>
+        <div class="lbl">отзывов у Клиники А</div>
+        <p class="meta">×4,5 к Клинике Б · прирост ~100+/мес (норма 10–15)</p>
+      </div>
+    </div>
+
+    <p class="note-strong" style="margin-top:22px;"><b>Что делать — машина отзывов «Сила отзыва».</b> Скопировать связку Клиники А: QR-полиграфия в клинике → пациент сканирует → отзыв → промокод <b>скидка 300 ₽</b> (за N промокодов клинике — ПО Профи бесплатно). Плюс сервисный обзвон после приёма со ссылкой на нужную карточку и <b>ответ на каждый отзыв ≤24 ч</b> (молчание снижает и балл, и конверсию). Цель — выйти на поток <b>100+/мес</b> и держать его, как у Клиники А.</p>
+
+    <p class="eyebrow" style="margin-top:30px; color:var(--c-red);">⚠️ Только легальный поток — иначе бан</p>
+    <ul class="risks">
+      <li>
+        <p class="rt">Карательная модерация площадки</p>
+        <p class="rd">ПроДокторов — «суд, следствие и карательный орган в одном». 30–35% отзывов отклоняются даже реальные (19 причин отказа). Отвечать ≤24 ч, не имитировать отзывы, не вставлять самопиар.</p>
+      </li>
+      <li>
+        <p class="rt">Бан за накрутку — необратим</p>
+        <p class="rd">Заказные/накрученные отзывы → <b>обнуление рейтинга + блок клиники на 3 года</b> (врача на 1 год) + баннер «покупала отзывы». Прецедент-суд «Шифа» (Москва, май-2026): заказали ~1500 фейков → рейтинг обнулён, суд в восстановлении ОТКАЗАЛ. Любой конкурент или уволенный может донести — площадка платит жалобщику до 5000 ₽.</p>
+      </li>
+    </ul>
+    <p class="note-strong"><b>Вывод по отзывам:</b> разрыв ×4,5 закрывается ТОЛЬКО легальной машиной (скидка + обзвон + QR + SEO-шаблон текста: услуга + город + ФИО врача). Накрутка — не ускорение, а самоликвидация карточки.</p>
+
+    <!-- РЕКЛАМНОЕ ПРОДВИЖЕНИЕ -->
+    <h3 style="margin-top:40px;">Рекламное продвижение: аукцион спецразмещения</h3>
+    <p class="lead-p">В денежных услугах (имплантация, брекеты) баллы не работают — топ-3 строки всегда платный аукцион спецразмещения (GSP, аукцион второй цены). Здесь у Клиники Б недобран и охват, и стабильность позиции.</p>
+
+    <div class="grid2">
+      <div class="factcard">
+        <h3>Текущая ставка Клиники Б</h3>
+        <p>Рекомендованная ставка по разделу «Стоматология / Общий список» — <b>~1700 ₽/сутки</b>, это <b>2-е место</b> (кто-то перебивает). По врачам задействован <b>1 из 5</b> (один врач в топ-1), остальные 4 ставки выключены — лежащий резерв охвата.</p>
+        <p class="s">Боевые ставки города весной 2026: <b>2700–3700 ₽/сутки</b> за позицию. Тайминг правки ставки — ~<b>22:50 МСК</b> (last-minute перебивка забирает место), стоп на сб/вс (звонков нет — бюджет не жжём).</p>
+      </div>
+      <div class="factcard">
+        <h3>Коллтрекинг Клиники Б за период</h3>
+        <p><b>56 звонков → 23 успешных → 54 записи</b>, эффективность кол-центра <b>5,2 мин/запись</b>. ПроДокторов даёт подменный номер, звонок обрабатывает робот, платим за состоявшуюся запись (фикс 260 ₽/запись в городе).</p>
+        <p class="s">Цифры дают сверку: сколько входящего реально доходит до записи и где теряется на телефоне.</p>
+      </div>
+    </div>
+
+    <p class="note-strong" style="margin-top:22px;"><b>Кого пускать в аукцион:</b> только врачей, работающих ТОЛЬКО у Клиники Б. Мультиклиничный («заёмный») врач уводит лид в чужую клинику через свою карточку — за него платить нельзя.</p>
+
+    <p class="note-strong" style="margin-top:14px;"><b>Стратегический сдвиг — с платной «Рекламы» на органику.</b> Клиника А держит топ-4 ОРГАНИЧЕСКИ (без метки «Реклама») за счёт баллов, отзывов и медалей. У Клиники Б — <b>1 медаль премии ПроДокторов (2020, устаревшая)</b> против <b>9 у Клиники А</b> (Победитель 2025 + 2024, номинант Гран-при 2025). Перевести позицию с платного спецразмещения на органический вес = добрать баллы (Часть 1) + запустить машину отзывов + взять первую свежую премию ПроДокторов через конкурс среди врачей.</p>
+
+    <!-- ИТОГОВАЯ ДОРОЖНАЯ КАРТА -->
+    <h3 style="margin-top:40px;">Дорожная карта приоритетов: быстро → системно</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Приоритет</th><th>Рычаг</th><th>Эффект</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="s-strong" style="color:var(--c-green);">🟢 Быстро</td>
+            <td>Донастроить онлайн-запись: подключить «запись на услуги» (0→100) + запись 2 врачам (12→14)</td>
+            <td class="s-num">до +188 баллов · без денег (запись уже работает)</td>
+          </tr>
+          <tr>
+            <td class="s-strong" style="color:var(--c-amber);">🟡 Средне</td>
+            <td>Клуб (0→70) + видеовизитки (10) + цена первичного из МИС (29→100) + профиль лечения (4)</td>
+            <td class="s-num">~+150 баллов · ≈700/730 после</td>
+          </tr>
+          <tr>
+            <td class="s-strong" style="color:var(--c-amber);">🟡 Средне</td>
+            <td>Запустить машину отзывов «Сила отзыва» (QR + скидка 300 ₽ + обзвон + ответы ≤24 ч)</td>
+            <td class="s-num">350 → к потоку 100+/мес</td>
+          </tr>
+          <tr>
+            <td class="s-strong" style="color:#1E4C82;">🔵 Системно</td>
+            <td>Стабильный топ-3 в аукционе + ставки по остальным 4 врачам (только «свои»)</td>
+            <td class="s-num">охват + удержание позиции в денежных услугах</td>
+          </tr>
+          <tr>
+            <td class="s-strong" style="color:#1E4C82;">🔵 Системно</td>
+            <td>Взять первую свежую премию ПроДокторов (конкурс врачей) → слезть с платной «Рекламы»</td>
+            <td class="s-num">медали в шапке (vs 9 у Клиники А) · органический вес</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── ФИНАЛ: одной строкой ── -->
+<section class="wrap-section">
+  <div class="wrap ctx">
+    <p class="eyebrow">Одной строкой</p>
+    <h2>Дисциплина процесса, а не бюджет</h2>
+    <p style="margin-bottom:0;">Клиника Б догоняет Клинику А не бюджетом, а дисциплиной процесса: <b>обвязка карточки</b> (бесплатно, +188 баллов в один заход) <b>+ машина отзывов</b>. Звёзды уже 5.0 — осталось добрать то, что лежит недобранным в ЛК, и поставить поток отзывов на поток.</p>
+  </div>
+</section>
+</div>
+<div id="tab-algo" class="tab-panel">
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Пошаговый алгоритм · со скринами личного кабинета</p>
+    <h2>Как выйти в топ-1 на ПроДокторов: 8 шагов на примере ЛК клиники-клиента</h2>
+    <p class="lead-p">Тот же маршрут от регистрации до удержания топ-1, но проиллюстрированный обезличенными экранами личного кабинета клиники на ПроДокторов. Главный принцип — не путать две битвы: общий список идёт по баллам ранжирования, а денежные списки по услугам (имплантация / брекеты / виниры) — только через платный аукцион спецразмещения. Топ-1 «по городу» = выиграть обе сразу. Все цифры — из официального help.prodoctorov.ru + сверки с ЛК (срез 13 июня 2026). Где данные закрыты в оферте — помечено <span class="lk-closed">[ЛК-закрыто]</span>.</p>
+
+    <div class="ctx">
+      <p class="eyebrow">Обезличенный материал</p>
+      <p style="margin-bottom:0;">Скриншоты ниже — из личного кабинета ПроДокторов клиники-клиента (вход клиникой, read-only, срез 13.06.2026), показаны в <b>обезличенном виде</b>: имя клиники, балансы счетов и операционные настройки скрыты. Оставлены только обезличенные показатели (балл ранжирования, механики карточки) — они иллюстрируют сам алгоритм работы с площадкой.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ALGO-SHOTS: flow со скринами -->
+<section class="wrap-section">
+  <div class="wrap">
+    <div class="flow">
+
+      <!-- ШАГ 1 -->
+      <div class="step">
+        <div class="num-col"><span class="num">1</span><span class="connector"></span></div>
+        <div class="body">
+          <h3>Регистрация: врач и клиника отдельно</h3>
+          <p>Два разных трека регистрации. Карточка врача и страница клиники проходят модерацию независимо.</p>
+          <div class="step-2">
+            <div class="mini">
+              <h4>Врач</h4>
+              <p>Найти свою карточку → нажать «Это Вы?» → email + телефон + SMS → загрузить документы (диплом, аккредитация, фото). Модерация до суток. Подтверждение опыта (категория / степень) даёт баллы.</p>
+            </div>
+            <div class="mini">
+              <h4>Клиника</h4>
+              <p>Добавить ЛПУ в каталог (модерация до 3 дней) → «Ваша страница?» → скачать заявление → подпись + печать → загрузить. ЛК открывается до 24 ч.</p>
+            </div>
+          </div>
+          <p style="margin-top:14px;"><b>Два договора</b> — отдельные счета:</p>
+          <div class="pills">
+            <span class="pill-lbl">Лицензионный · ПО + оплата записей</span>
+            <span class="pill-lbl">Рекламный · спецразмещение + баннеры</span>
+          </div>
+          <div class="shotbig">
+            <img loading="lazy" src="assets/lk/08_zapisi.png" alt="Раздел «Настройки записи» в личном кабинете ПроДокторов: тумблеры онлайн-записи в МИС и записи по телефону, подменный номер коллтрекинга, цена записи 260 рублей.">
+            <p class="shotnote"><b>Настройки записи в ЛК.</b> Тумблеры «Онлайн-запись в МИС» и «Запись по телефону», подменный номер коллтрекинга и фиксированная цена записи <b>260 ₽</b> (вкл. НДС) для города. Здесь же — источники лидов (Zoon · Докту · 32top · 2ГИС · Budu · SPLAT) и блок СМС/email-уведомлений.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ШАГ 2 -->
+      <div class="step">
+        <div class="num-col"><span class="num">2</span><span class="connector"></span></div>
+        <div class="body">
+          <h3>Интеграция МИС — фундамент ранжирования</h3>
+          <p>Подключение МИС (расписание + онлайн-запись через площадку, вход в МедФлекс логином ПД). Без этого шага не открываются ключевые баллы — это база, на которой держится позиция в общем списке.</p>
+          <div class="foundation">
+            <p><span class="big-pct">≈400 из 730 баллов</span> завязаны на интеграцию МИС: онлайн-запись на услуги (100) + к врачам (100) + автовыгрузка цен (100) + успешность записи ≥75% (100). Плюс завязанные сверху — свободные ячейки и доступность. <b>Без МИС в топ не выйти.</b></p>
+          </div>
+          <p style="margin-top:14px;">⚠️ Если МИС не умеет автовыгрузку цен (например, Айдент) — цены грузятся Excel-шаблоном, но <b>баллов за это не даёт</b>.</p>
+
+          <div class="shotbig">
+            <img loading="lazy" src="assets/lk/17_rank.png" alt="Панель «Баллы клиники» в личном кабинете ПроДокторов: разбивка ранжирования по факторам — онлайн-запись на услуги и к врачам, автовыгрузка цен, Клуб, видеовизитка, успешность записи, звёздный рейтинг, телефон, доступность.">
+            <p class="shotnote"><b>⭐ Ключевой экран — «Баллы клиники» в ЛК.</b> Из чего собираются 730 баллов: рейтинг ×30 (до 150), онлайн-запись на услуги (100) и к врачам (100), автовыгрузка цен (100), успешность записи ≥75% (100), Клуб (70), телефон (50), доступность ≥15 ч (50), видеовизитка (10). <b>Текущий балл Клиники Б — 371 / 730:</b> резерв ≈359 баллов лежит в недонастроенной обвязке (онлайн-запись на услуги 0/100, к врачам 12/100, цены из МИС 29/100, Клуб 0/70, видеовизитка 0/10) — это настройка, а не деньги.</p>
+          </div>
+
+          <div class="step-2" style="margin-top:18px;">
+            <div class="mini">
+              <h4>Видеовизитка (+10 баллов)</h4>
+              <p>Врач 9:16, 15–60 сек; клиника 1–3 мин, руководитель представляется. Без музыки, рекламы, контактов и пациентов в кадре — иначе отклонят.</p>
+            </div>
+            <div class="mini">
+              <h4>Доступность ≥15 ч (+50 баллов)</h4>
+              <p>График работы клиники в карточке. Чем шире окно приёма (с учётом исключений), тем выше балл доступности.</p>
+            </div>
+          </div>
+          <div class="shotgrid" style="margin-top:14px;">
+            <div class="shot">
+              <p class="shotcap">Загрузка видеовизитки</p>
+              <img loading="lazy" src="assets/lk/20_video.png" alt="Экран загрузки видеовизитки клиники в личном кабинете ПроДокторов с правилом: вертикальное видео от 1 до 3 минут.">
+              <p class="shotnote">Экран загрузки видеовизитки + правило «вертикальное, 1–3 мин». У Клиники Б сейчас <b>не загружена (0/10)</b> — быстрый мелкий резерв.</p>
+            </div>
+            <div class="shot">
+              <p class="shotcap">График работы</p>
+              <img loading="lazy" src="assets/lk/21_grafik.png" alt="Раздел «График работы» в личном кабинете ПроДокторов: основной график и исключения из графика.">
+              <p class="shotnote">Основной график (Пн–Пт 09–20, Сб–Вс 09–17) + «Исключения из графика» — иллюстрирует фактор «доступность ≥15 ч».</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ШАГ 3 -->
+      <div class="step">
+        <div class="num-col"><span class="num">3</span><span class="connector"></span></div>
+        <div class="body">
+          <h3>Заполнение карточки</h3>
+          <p>Наполнение профиля под максимум баллов и доверия пациента.</p>
+          <ul class="check">
+            <li>Карточка клиники / врача: услуги, цены, фото, документы проверены.</li>
+            <li><b>Автовыгрузка цен</b> через МедФлекс (100 баллов) — не вручную.</li>
+            <li><b>Видеовизитка:</b> врач 9:16, 15–60 сек; клиника 1–3 мин, руководитель представляется. Без музыки, рекламы, контактов и пациентов в кадре (10 баллов).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ШАГ 4 -->
+      <div class="step">
+        <div class="num-col"><span class="num">4</span><span class="connector"></span></div>
+        <div class="body">
+          <h3>Машина отзывов — легально</h3>
+          <p>Звёзды (рейтинг) купить нельзя — только отзывы. Поток должен быть постоянным: рейтинг устаревает (~6 мес вес падает).</p>
+          <ul class="check">
+            <li><b>«Сила отзыва»:</b> QR-полиграфия в клинике → пациент сканирует → оставляет отзыв → получает промокод <b>300 ₽ скидки</b>. За N промокодов клинике дают платное ПО «Профи» бесплатно на 90 дней.</li>
+            <li>На рейтинг влияют <b>только авторизованные</b> (подтверждён телефон) подробные отзывы. Подробный ×1.2, авторизованный ×3.</li>
+            <li>Отвечать на отзывы <b>≤24 ч</b> — молчание снижает балл и конверсию.</li>
+            <li>⚠️ Накрутка / заказ отзывов → бан. См. блок рисков ниже.</li>
+          </ul>
+          <div class="shotbig">
+            <img loading="lazy" src="assets/lk/18_sila.png" alt="Раздел «Сила отзыва» в личном кабинете ПроДокторов: механика сбора отзывов через QR-код со скидкой 300 рублей пациенту.">
+            <p class="shotnote"><b>Программа «Сила отзыва» в ЛК.</b> Механика легального сбора: QR-полиграфия → пациент сканирует → подробный отзыв → промокод <b>300 ₽</b> скидки. За набранные промокоды — ПО «Профи» бесплатно на 90 дней. Это мотор, который держит рейтинг 5.0 и подпитывает позицию.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ШАГ 5 -->
+      <div class="step">
+        <div class="num-col"><span class="num">5</span><span class="connector"></span></div>
+        <div class="body">
+          <h3>Коллтрекинг — подменный номер площадки</h3>
+          <p>Свой номер указать <b>нельзя</b> — площадка выдаёт <b>подменный номер</b>. Звонки обрабатывает робот, идёт запись и транскрипт (на тарифах Стандарт / Профи).</p>
+          <p>В личном кабинете (вкладки «Запись по телефону» / «Онлайн-запись» / «Все звонки») видно: количество звонков, длительность, записи, суммы, эффективность кол-центра (минут на запись). Оплата — за <b>успешную</b> запись по телефону (лицензионный счёт).</p>
+        </div>
+      </div>
+
+      <!-- ШАГ 6 -->
+      <div class="step">
+        <div class="num-col"><span class="num">6</span><span class="connector"></span></div>
+        <div class="body">
+          <h3>Виды оплат — два независимых счёта</h3>
+          <p>Балансы не пересекаются. Лиды и ПО — один счёт, продвижение — другой.</p>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Лицензионный счёт</th><th>Рекламный счёт</th></tr></thead>
+              <tbody>
+                <tr><td>Онлайн-запись — <b>3,7%</b> от стоимости услуги (коридор по городу; <b>в этом городе = фикс 260 ₽</b>/запись, Яндекс-лиды 179 ₽)</td><td>Спецразмещение — аукцион GSP (топ-3)</td></tr>
+                <tr><td>Запись по телефону (за успешную)</td><td>Баннеры (за показы)</td></tr>
+                <tr><td>Клуб ПД — сбор <b>10%</b> от клубной цены</td><td>&nbsp;</td></tr>
+                <tr><td>ПО: Лайт (беспл) / Стандарт / Профи (подписка 30 дн)</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:12px;"><b>Город с фиксированной ценой записи (подтверждено в ЛК 13.06):</b> <b>260 ₽</b> за состоявшуюся запись (онлайн-запись ПД / запись по телефону / лиды Zoon · Докту · 32top · 2ГИС · Budu · SPLAT — все 260 ₽), <b>Яндекс-лиды 179 ₽</b> (с НДС). Формула «3,7%» — это коридор min/max по городу; здесь он схлопнут в фикс 260 ₽. Списывается за <b>состоявшуюся</b> запись, 0 ₽ при отмене. <span class="src-pill src-vlad">ЛК ПД + help</span></p>
+          <div class="shotbig">
+            <img loading="lazy" src="assets/lk/27_po.png" alt="Сравнение тарифов ПО ПроДокторов (Лайт, Стандарт, Профи, Клиника) по функциям и ценам: 915, 1830 и 2745 рублей.">
+            <p class="shotnote"><b>Тарифы ПО в ЛК — лицензионный счёт.</b> Сравнение Лайт / Стандарт / Профи / Клиника по функциям; цены <b>915 / 1830 / 2745 ₽</b>. На «Профи» открывается запись/транскрипт звонков и скрытие рекламы конкурентов с карточки.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ШАГ 7 -->
+      <div class="step">
+        <div class="num-col"><span class="num">7</span><span class="connector"></span></div>
+        <div class="body">
+          <h3>Спецразмещение — аукцион за топ-3</h3>
+          <p>Аукцион GSP (второй цены): три высшие ставки берут места, победитель платит ставку следующего. Блок — максимум 3 места, на сутки. Рекомендованная = вчерашняя ставка 1-го места +1% (цена естественно разгоняется).</p>
+          <p class="eyebrow" style="margin-top:6px;">Рекомендованные мин. ставки по разделам · март 2026</p>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Раздел</th><th>Реком. мин. / сутки</th></tr></thead>
+              <tbody>
+                <tr><td>Стом-услуги (общий)</td><td class="s-num">162 ₽</td></tr>
+                <tr><td>Хирург</td><td class="s-num">475 ₽</td></tr>
+                <tr><td>Ортопед</td><td class="s-num">1 374 ₽</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:12px;"><b>Боевая ставка</b> за позицию (клиника, реальный аукцион) — <b>2 700–3 700 ₽/сут</b>, кратно выше рекомендованного минимума: аукцион разогрет. У Клиники Б текущая ставка <b>≈1 717 ₽ = 2-е место</b> (кто-то перебивает) — резерв удержания топ-1.</p>
+          <ul class="check">
+            <li><b>Тайминг:</b> ставку правят ~<b>22:50 МСК</b> — аукцион считает на завтра поздно вечером, last-minute перебивка забирает позицию.</li>
+            <li><b>Стоп на сб/вс</b> — звонков нет, бюджет не жгут.</li>
+            <li>Точная мин. ставка (раздел 11 оферты) — <span class="lk-closed">[ЛК-закрыто]</span>.</li>
+          </ul>
+          <div class="shotbig">
+            <img loading="lazy" src="assets/lk/12_spec.png" alt="Вкладка спецразмещения «Клиника» в личном кабинете ПроДокторов: список рекламных мест по специальностям, текущие ставки и кнопки управления ставками.">
+            <p class="shotnote"><b>Вкладка аукциона «Клиника» в ЛК.</b> Список рекламных мест по специальностям, текущие ставки и кнопки управления — это и есть GSP-аукцион за топ-3. Рекомендованная ставка = вчерашняя топ-ставка +1 ₽; подача до 23:00 МСК на завтра.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ШАГ 8 -->
+      <div class="step">
+        <div class="num-col"><span class="num">8</span><span class="connector"></span></div>
+        <div class="body">
+          <h3>Выход в топ-1 — две битвы одновременно</h3>
+          <p>Общий список — по баллам, денежные списки по услугам — по аукциону. Топ-1 «по городу» = обе битвы выиграны сразу.</p>
+          <div class="battle">
+            <div class="card take">
+              <h3>Битва 1 — баллы (общий список)</h3>
+              <ul>
+                <li>Клиника собирает до <b>730 баллов</b>, врач — до <b>770</b>.</li>
+                <li>Фундамент: МИС/МедФлекс + онлайн-запись услуг и врачей + успешность + телефон + аптайм + Клуб + видеовизитка.</li>
+                <li>Звёзды (до 150) — поток отзывов через «Силу отзыва» + постобзвон, постоянно, не разово.</li>
+                <li>У врача критичны первые 10 отзывов и свободные ячейки на 14 дней (ноль ячеек = 0 баллов).</li>
+              </ul>
+            </div>
+            <div class="card beat">
+              <h3>Битва 2 — аукцион (денежные услуги)</h3>
+              <ul>
+                <li>Топ-3 по имплантации / брекетам / винирам — <b>только спецразмещение</b>, баллы тут не работают.</li>
+                <li>Аукцион второй цены, галка «повторять ежедневно», правка ставки ~22:50 МСК, стоп на сб/вс.</li>
+                <li>В аукцион пускать врача, работающего <b>только у вас</b> (иначе лид утекает в чужую клинику через карточку).</li>
+              </ul>
+            </div>
+          </div>
+          <p class="eyebrow" style="margin-top:18px;">Сводный чек-лист топ-1</p>
+          <ul class="check">
+            <li>Регистрация + оба договора (лицензионный + рекламный).</li>
+            <li>МИС подключена → ~400 баллов фундамента.</li>
+            <li>Автовыгрузка цен + видеовизитка + Клуб + телефон + доступность ≥15 ч.</li>
+            <li>Поток отзывов через «Силу отзыва», ответ ≤24 ч → рейтинг к 5.0.</li>
+            <li>Аукцион по денежным услугам: «повторять ежедневно», ставка ~22:50, стоп выходные.</li>
+            <li>В аукцион — только врачи, работающие исключительно у вас.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ALGO-SHOTS: дополнительные разделы ЛК (маркетинг / полиграфия) -->
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Дополнительные инструменты карточки</p>
+    <h2>Что ещё есть в ЛК под обвязку и доверие</h2>
+    <p class="lead-p">Помимо восьми шагов, в кабинете доступны разделы, которые добирают «мягкие» баллы и работают на конверсию карточки: акции со скидками и полиграфия для офлайн-сбора отзывов и доверия в клинике.</p>
+    <div class="shotgrid">
+      <div class="shot">
+        <p class="shotcap">Акции клиники</p>
+        <img loading="lazy" src="assets/lk/24_akcii.png" alt="Раздел «Акции» в личном кабинете ПроДокторов: создание акций со скидками для карточки клиники.">
+        <p class="shotnote"><b>Раздел «Акции» в ЛК.</b> Создание акций со скидками прямо в карточке — конверсионный элемент (как тест-драйв услуги у конкурента).</p>
+      </div>
+      <div class="shot">
+        <p class="shotcap">Полиграфия</p>
+        <img loading="lazy" src="assets/lk/28_poligraf.png" alt="Раздел «Полиграфия» в личном кабинете ПроДокторов: превью визиток врачей для печати.">
+        <p class="shotnote"><b>Раздел «Полиграфия» в ЛК.</b> Визитки врачей и QR-материалы под офлайн-сбор отзывов в клинике — топливо для «Силы отзыва» (шаг 4).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALGO-SHOTS: трудности / риски -->
+<section class="wrap-section">
+  <div class="wrap">
+    <p class="eyebrow">Трудности и риски</p>
+    <h2>Где алгоритм ломается — и почему нельзя вешать загрузку только на ПД</h2>
+    <p class="lead-p">Обратная сторона площадки. Эти рычаги работают одинаково и против конкурента, и против вашей клиники — учитывать при планировании канала.</p>
+    <ul class="risks">
+      <li>
+        <p class="rt">Карательная модерация — главная боль</p>
+        <p class="rd">Фейк-отзыв от конкурента (заказывается за ~1 000 ₽) → жалоба → <b>обнуление рейтинга и блок: клиника на 3 года, врач на 1 год</b> + баннер «покупала отзывы». Площадка платит жалобщику до 5 000 ₽ — это стимулирует доносы конкурентов и уволенных. Откатить нельзя (прецедент-суд в восстановлении рейтинга отказал).</p>
+      </li>
+      <li>
+        <p class="rt">Ловушка зависимости</p>
+        <p class="rd">Кейс: 45% записей через площадку → комиссию подняли до 32% → −12% маржи, отказаться уже нельзя. Красный флаг — доля агрегатора <b>выше 40%</b> записей. Плюс 30–35% отзывов отклоняются (даже реальные), а холодные лиды доходят не все.</p>
+      </li>
+    </ul>
+    <p class="srcnote" style="margin-top:16px;">Все шаги — из официального help.prodoctorov.ru. Ставки, тайминг 22:50 и правило выходных сверены с открытыми источниками по площадке. Скрины — из ЛК клиники-клиента (срез 13.06.2026), показаны в обезличенном виде. Где данные закрыты в оферте — помечено <span class="lk-closed">[ЛК-закрыто]</span>, не выдумано.</p>
+  </div>
+</section>
+</div>
+<footer class="sig"><div class="wrap"><b>Обезличенный разбор на ПроДокторов</b> · лидер рынка (А) vs клиника-клиент (Б) · 13 июня 2026<br>Публичные карточки — снимок prodoctorov.ru на дату. Скрины ЛК показаны в обезличенном виде. Имена клиник, адреса и операционные данные скрыты в коды.</div></footer>
+<script>function showTab(id){var P=document.querySelectorAll('.tab-panel');for(var i=0;i<P.length;i++)P[i].classList.remove('active');var B=document.querySelectorAll('.tabnav button');for(var j=0;j<B.length;j++)B[j].classList.remove('active');var p=document.getElementById('tab-'+id),b=document.getElementById('tab-btn-'+id);if(p)p.classList.add('active');if(b)b.classList.add('active');if(history.replaceState)history.replaceState(null,'','#'+id);window.scrollTo(0,0);}(function(){var h=(location.hash||'').replace('#','');if(['cmp','audit','algo'].indexOf(h)>=0)showTab(h);})();</script>
+</body></html>
