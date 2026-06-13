@@ -18,15 +18,48 @@
   #gate input{width:100%;padding:12px;border:1px solid #E5EAF1;border-radius:10px;font-size:16px;margin-bottom:10px}
   #gate button{width:100%;padding:12px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;font-size:15px;cursor:pointer}
   #gate .err{color:var(--red);font-size:13px;height:16px;margin-top:8px}
-  #app{display:none;max-width:680px;margin:0 auto;padding:18px 14px 72px}
-  header.top{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-  header.top h1{font-size:23px;margin:0}header.top .sub{color:var(--mut);font-size:12px}
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+  /* ───────────────── Оболочка: sidebar + контент (SPA) ───────────────── */
+  #app{display:none}
+  /* Боковое меню (десктоп) */
+  #side{position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--navy);color:#E8EEF6;
+        display:flex;flex-direction:column;z-index:30;border-right:1px solid rgba(255,255,255,.06)}
+  #side .brand{padding:18px 18px 14px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  #side .brand .lg{font-size:18px;font-weight:800;letter-spacing:.2px;color:#fff}
+  #side .brand .sub{font-size:10.5px;color:#7E93B4;width:100%;margin-top:3px;line-height:1.3}
+  #side .menu{flex:1;overflow-y:auto;padding:6px 10px 10px;-webkit-overflow-scrolling:touch}
+  #side .mi{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:0;
+        color:#B9C8DE;padding:10px 12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;
+        text-decoration:none;line-height:1.2;position:relative}
+  #side .mi .mic{flex:none;width:20px;text-align:center;font-size:15px}
+  #side .mi .mt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #side .mi .badge{flex:none;background:var(--red);color:#fff;font-size:10.5px;font-weight:800;
+        min-width:18px;height:18px;padding:0 5px;border-radius:999px;display:flex;align-items:center;justify-content:center}
+  #side .mi:hover{background:rgba(255,255,255,.05);color:#E8EEF6}
+  #side .mi.active{background:linear-gradient(90deg,rgba(20,184,166,.22),rgba(20,184,166,.04));color:#fff}
+  #side .mi.active::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:3px;border-radius:0 3px 3px 0;background:var(--teal)}
+  #side .foot{padding:10px;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:7px}
+  #side .foot .sb{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:0;
+        color:#D6E1F0;padding:9px 11px;border-radius:9px;font-weight:600;font-size:12.5px;cursor:pointer;text-decoration:none}
+  #side .foot .sb:hover{background:rgba(255,255,255,.12)}
+  #side .foot .upd{font-size:10.5px;color:#6E83A4;line-height:1.35;padding:2px 2px 0}
+  /* Контент-область */
+  #main{margin-left:220px;min-height:100vh}
+  #main .wrap{max-width:680px;margin:0 auto;padding:24px 20px 96px}
+  /* Заголовок активного раздела */
+  .pagehead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+  .pagehead h1{font-size:24px;margin:0;line-height:1.1}
+  .pagehead .ph-sub{color:var(--mut);font-size:12.5px}
+  /* счётчик раздела (бывшая правая часть h2) — мелкая строка над контентом */
+  .seccount{font-size:12px;color:var(--mut);margin:-6px 0 11px;font-weight:600}
+  .seccount:empty{display:none}
+  /* Панели-разделы: показывается только активная */
+  .panel{display:none}
+  .panel.active{display:block;animation:fadein .22s ease}
+  @keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  /* Мобильный таб-бар (скрыт на десктопе) */
+  #tabbar{display:none}
   .btn-sec{display:inline-flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--line);color:var(--navy2);padding:9px 13px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none}
   .btn-sec:active{transform:translateY(1px)}
-  /* — Якорь-навигация по разделам — */
-  nav.jump{display:flex;gap:7px;overflow-x:auto;padding:2px 0 12px;margin:0 -14px 8px;padding-left:14px;padding-right:14px;-webkit-overflow-scrolling:touch}
-  nav.jump a{flex:none;background:var(--card);border:1px solid var(--line);color:var(--mut);padding:7px 12px;border-radius:999px;font-size:12.5px;font-weight:600;text-decoration:none;white-space:nowrap}
   section{margin-bottom:24px;scroll-margin-top:14px}
   section h2{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:0 0 9px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
   section h2 .hd{font-size:12px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--mut)}
@@ -148,6 +181,49 @@
   .pipe .ps{font-size:12.5px;margin:6px 0 8px}
   .pipe .nx{font-size:11.5px;color:var(--mut);border-top:1px dashed var(--line);padding-top:7px}
   .pipe .nx b{color:var(--teal-d);font-weight:600}
+  /* — Рилсы — */
+  .reels{display:grid;grid-template-columns:1fr;gap:12px}
+  .reel{padding:0;overflow:hidden}
+  .reel .rh{display:flex;align-items:flex-start;gap:11px;padding:14px 15px 11px}
+  .reel .rn{width:30px;height:30px;border-radius:9px;background:var(--navy);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
+  .reel .rt{flex:1;min-width:0}
+  .reel .rtitle{font-weight:700;font-size:15px;line-height:1.3}
+  .reel .rmeta{font-size:12px;color:var(--mut);margin-top:3px;line-height:1.4}
+  .reel .rstat{flex:none;margin-top:2px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+  .rs-ready{background:#DBEAFE;color:#1E40AF}.rs-shoot{background:#FEF3C7;color:#92400E}.rs-live{background:#DCFCE7;color:#166534}
+  .reel .rhook{margin:0 15px 13px;padding:11px 13px;border-left:3px solid var(--teal);background:rgba(20,184,166,.07);border-radius:0 9px 9px 0}
+  .reel .rhk-l{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700;margin-bottom:3px}
+  .reel .rhk-t{font-size:14.5px;line-height:1.4;font-weight:600;color:var(--ink)}
+  @media(prefers-color-scheme:dark){.rs-ready{background:#1E3A5F;color:#9FB6D6}}
+  /* ───────────────── Мобайл: sidebar прячется, низ — таб-бар ───────────────── */
+  @media(max-width:760px){
+    #side{transform:translateX(-100%);transition:transform .25s ease;width:240px;box-shadow:0 0 40px rgba(0,0,0,.4)}
+    body.menu-open #side{transform:translateX(0)}
+    body.menu-open #scrim{display:block}
+    #scrim{display:none;position:fixed;inset:0;background:rgba(11,31,58,.5);z-index:25;backdrop-filter:blur(2px)}
+    #main{margin-left:0}
+    #main .wrap{padding:14px 14px 90px}
+    .pagehead{margin-bottom:14px}
+    .pagehead h1{font-size:21px}
+    /* верхняя мини-шапка с бургером */
+    #mtop{display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:20;background:var(--bg);
+          padding:11px 14px;margin:0 -14px 8px;border-bottom:1px solid var(--line)}
+    #mtop .burger{width:40px;height:40px;flex:none;border:1px solid var(--line);background:var(--card);border-radius:10px;
+          color:var(--navy2);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    #mtop .mttl{font-weight:800;font-size:16px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #mtop .mref{flex:none;border:0;background:none;color:var(--teal-d);font-size:19px;cursor:pointer;padding:6px}
+    /* нижний таб-бар: ключевые разделы */
+    #tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:24;background:var(--card);
+          border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(11,31,58,.08);
+          padding:5px 4px calc(5px + env(safe-area-inset-bottom,0px))}
+    #tabbar .tb{flex:1;background:none;border:0;color:var(--mut);font-size:9.5px;font-weight:700;cursor:pointer;
+          display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;border-radius:9px;min-width:0;position:relative}
+    #tabbar .tb .tbi{font-size:18px;line-height:1}
+    #tabbar .tb .tbt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+    #tabbar .tb.active{color:var(--teal-d)}
+    #tabbar .tb .tbdot{position:absolute;top:3px;right:calc(50% - 16px);width:8px;height:8px;border-radius:50%;background:var(--red)}
+  }
+  @media(min-width:761px){#mtop{display:none}#scrim{display:none}}
 </style>
 </head>
 <body>
@@ -158,83 +234,87 @@
 </div></div>
 
 <div id="app">
-  <header class="top">
-    <div><h1>🎯 Штаб</h1><div class="sub" id="updated"></div></div>
-    <div class="toolbar">
-      <button class="btn-sec" onclick="loadData()">🔄 Обновить</button>
-      <a class="btn-sec" href="./index.html">📊 Дашборд</a>
+  <!-- ░░ Боковое меню (десктоп) / выезжающее (мобайл) ░░ -->
+  <aside id="side">
+    <div class="brand"><span class="lg">🎯 Штаб</span><span class="sub">Никадемия · воронка и продажи</span></div>
+    <nav class="menu" id="menu"><!-- пункты строит buildMenu() --></nav>
+    <div class="foot">
+      <button class="sb" onclick="loadData()">🔄 Обновить</button>
+      <a class="sb" href="./index.html">📊 Дашборд воронки</a>
+      <div class="upd" id="updated"></div>
     </div>
-  </header>
+  </aside>
+  <div id="scrim" onclick="closeMenu()"></div>
 
-  <nav class="jump">
-    <a href="#s-today">🔥 Сегодня</a>
-    <a href="#s-tasks">✅ Задачи</a>
-    <a href="#s-funnel">💰 Воронка</a>
-    <a href="#s-ladder">🪜 Лестница</a>
-    <a href="#s-pipes">🚇 Каналы</a>
-    <a href="#s-skills">🤖 Скиллы</a>
-    <a href="#s-links">🔗 Ссылки</a>
-    <a href="#s-sources">🗄️ Источники данных</a>
-    <a href="#s-clinics">🏥 Анализы клиник</a>
-  </nav>
-
-  <section id="s-today">
-    <h2>Сегодня · действия дня <span class="hd" id="hdate"></span></h2>
-    <div class="card" id="today"></div>
-  </section>
-
-  <section id="s-tasks">
-    <h2>Задачи по потокам <span class="hd" id="tcount"></span></h2>
-    <div class="tasks" id="tasks"></div>
-    <div class="note">Сгруппированы по колонке <b>поток</b> вкладки <b>задачи</b> таблицы «Штаб». Горящие потоки — сверху. Штаб подхватывает сам.</div>
-  </section>
-
-  <section id="s-funnel">
-    <h2>Воронка деньгами</h2>
-    <div class="card">
-      <div class="hero"><div class="v" id="hrev"></div><div class="s" id="hsub"></div></div>
-      <table><thead><tr><th>Период</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Заявки</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-agg"></tbody></table>
+  <!-- ░░ Контент-область: показывается ОДИН активный раздел ░░ -->
+  <div id="main"><div class="wrap">
+    <!-- мобильная мини-шапка с бургером -->
+    <div id="mtop">
+      <button class="burger" onclick="toggleMenu()" aria-label="Меню">☰</button>
+      <div class="mttl" id="mtitle">Сегодня</div>
+      <button class="mref" onclick="loadData()" aria-label="Обновить">🔄</button>
     </div>
-    <div class="note">«7 дней» — по полю date поста; зеркала без даты не входят.</div>
-  </section>
 
-  <section>
-    <h2>Топ постов</h2>
-    <div class="card"><table><thead><tr><th>Пост</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-top"></tbody></table></div>
-  </section>
+    <div class="pagehead"><h1 id="phTitle">Сегодня</h1><span class="ph-sub" id="phSub"></span></div>
 
-  <section id="s-ladder">
-    <h2>Лестница продуктов</h2>
-    <div class="card" id="ladder"></div>
-  </section>
+    <section class="panel" id="s-today" data-title="Сегодня">
+      <div class="card" id="today"></div>
+    </section>
 
-  <section id="s-pipes">
-    <h2>Трубы каналов</h2>
-    <div class="pipes" id="pipes"></div>
-  </section>
+    <section class="panel" id="s-tasks" data-title="Задачи">
+      <div class="seccount" id="tcount"></div>
+      <div class="tasks" id="tasks"></div>
+      <div class="note">Сгруппированы по колонке <b>поток</b> вкладки <b>задачи</b> таблицы «Штаб». Горящие потоки — сверху. Штаб подхватывает сам.</div>
+    </section>
 
-  <section id="s-skills">
-    <h2>Скиллы маркетинга-продаж <span class="hd" id="scount"></span></h2>
-    <div class="card" id="skills"></div>
-    <div class="note">Подтягиваются авто из <b>SKILL.md</b> через <code>shtab_skills_sync.mjs</code> (раз в неделю).</div>
-  </section>
+    <section class="panel" id="s-funnel" data-title="Воронка деньгами">
+      <div class="card">
+        <div class="hero"><div class="v" id="hrev"></div><div class="s" id="hsub"></div></div>
+        <table><thead><tr><th>Период</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Заявки</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-agg"></tbody></table>
+      </div>
+      <div class="note">«7 дней» — по полю date поста; зеркала без даты не входят.</div>
+      <h2 style="margin-top:22px">Топ постов</h2>
+      <div class="card"><table><thead><tr><th>Пост</th><th class="num">Показы</th><th class="num">Клики</th><th class="num">Оплаты</th><th class="num">Выручка</th></tr></thead><tbody id="t-top"></tbody></table></div>
+    </section>
 
-  <section id="s-links">
-    <h2>Ссылки</h2>
-    <div id="links"></div>
-  </section>
+    <section class="panel" id="s-reels" data-title="Рилсы">
+      <div class="reels" id="reels"></div>
+      <div class="note">Пилот: 3 рилса под угол ниши (экономика и управление клиникой). CTA всех — «Напиши РАЗБОР в комментарии». Полные раскадровки — в Гугл-доке.</div>
+    </section>
 
-  <section id="s-sources">
-    <h2>Источники данных (SA) <span class="hd" id="srccount"></span></h2>
-    <div id="sources"></div>
-    <div class="note">Google-таблицы с доступом у сервис-аккаунта дашбордов. Бейдж <span class="sa-ok">✅</span> — робот читает; <span class="sa-no">✗</span> — нужно расшарить роботу как читателя. Из вкладки <b>источники-данных</b> таблицы «Штаб». NDA-цифры в каталог не выносятся.</div>
-  </section>
+    <section class="panel" id="s-ladder" data-title="Лестница продуктов">
+      <div class="card" id="ladder"></div>
+    </section>
 
-  <section id="s-clinics">
-    <h2>Анализы клиник <span class="hd" id="clcount"></span></h2>
-    <div id="clinics"></div>
-    <div class="note">Разборы клиник и конкурентов (отдельные страницы-накопители). Список пополняется по мере разведки.</div>
-  </section>
+    <section class="panel" id="s-pipes" data-title="Трубы каналов">
+      <div class="pipes" id="pipes"></div>
+    </section>
+
+    <section class="panel" id="s-skills" data-title="Скиллы маркетинга-продаж">
+      <div class="seccount" id="scount"></div>
+      <div class="card" id="skills"></div>
+      <div class="note">Подтягиваются авто из <b>SKILL.md</b> через <code>shtab_skills_sync.mjs</code> (раз в неделю).</div>
+    </section>
+
+    <section class="panel" id="s-links" data-title="Ссылки">
+      <div id="links"></div>
+    </section>
+
+    <section class="panel" id="s-sources" data-title="Источники данных (SA)">
+      <div class="seccount" id="srccount"></div>
+      <div id="sources"></div>
+      <div class="note">Google-таблицы с доступом у сервис-аккаунта дашбордов. Бейдж <span class="sa-ok">✅</span> — робот читает; <span class="sa-no">✗</span> — нужно расшарить роботу как читателя. Из вкладки <b>источники-данных</b> таблицы «Штаб». NDA-цифры в каталог не выносятся.</div>
+    </section>
+
+    <section class="panel" id="s-clinics" data-title="Анализы клиник">
+      <div class="seccount" id="clcount"></div>
+      <div id="clinics"></div>
+      <div class="note">Разборы клиник и конкурентов (отдельные страницы-накопители). Список пополняется по мере разведки.</div>
+    </section>
+  </div></div>
+
+  <!-- ░░ Мобильный нижний таб-бар (ключевые разделы) ░░ -->
+  <nav id="tabbar"><!-- строит buildTabbar() --></nav>
 </div>
 
 <script>
@@ -247,10 +327,84 @@ const SHTAB_ID="13xisJHEUstFLGQHANcb0hkEE8vXTOXfl3cO-y6leA2A";
 const KEY="shtab_voronka_cache";
 let DATA={posts:[],sales:[],deals:[],tasks:[],skills:[],links:[],sources:[]};
 
+/* ─────────── SPA-навигация: модель разделов ───────────
+   id   — id <section> панели; hash — якорь в URL; ic — иконка; nm — подпись в меню;
+   tab  — короткая подпись для нижнего таб-бара (мобайл, null = не выносим в таб-бар). */
+const SECTIONS=[
+  {id:"s-today",  hash:"сегодня",  ic:"🔥", nm:"Сегодня",          tab:"Сегодня", badge:"today"},
+  {id:"s-tasks",  hash:"задачи",   ic:"✅", nm:"Задачи",           tab:"Задачи",  badge:"tasks"},
+  {id:"s-funnel", hash:"воронка",  ic:"💰", nm:"Воронка деньгами", tab:"Воронка"},
+  {id:"s-reels",  hash:"рилсы",    ic:"🎬", nm:"Рилсы",            tab:"Рилсы"},
+  {id:"s-ladder", hash:"лестница", ic:"🪜", nm:"Лестница продуктов",tab:null},
+  {id:"s-pipes",  hash:"каналы",   ic:"🚇", nm:"Трубы каналов",    tab:null},
+  {id:"s-skills", hash:"скиллы",   ic:"🤖", nm:"Скиллы",           tab:null},
+  {id:"s-links",  hash:"ссылки",   ic:"🔗", nm:"Ссылки",           tab:null},
+  {id:"s-sources",hash:"источники",ic:"🗄️", nm:"Источники данных", tab:null},
+  {id:"s-clinics",hash:"клиники",  ic:"🏥", nm:"Анализы клиник",   tab:null},
+];
+const DEFAULT_SEC="s-today";
+let CUR_SEC=DEFAULT_SEC;
+
 function tryLogin(){ if(document.getElementById("pw").value===PASSWORD){sessionStorage.setItem("dash_ok","1");openApp();} else document.getElementById("gerr").textContent="Неверный пароль"; }
-function openApp(){ document.getElementById("gate").style.display="none"; document.getElementById("app").style.display="block"; loadData(); }
+function openApp(){
+  document.getElementById("gate").style.display="none";
+  document.getElementById("app").style.display="block";
+  buildMenu(); buildTabbar();
+  route();                                   // открыть раздел из hash или дефолт
+  window.addEventListener("hashchange",route);
+  loadData();
+}
 document.getElementById("pw").addEventListener("keydown",e=>{if(e.key==="Enter")tryLogin();});
-if(sessionStorage.getItem("dash_ok")==="1") openApp();
+// авто-вход откладываем на конец парса скрипта (ниже определены const T0/dm и т.п. — TDZ)
+if(sessionStorage.getItem("dash_ok")==="1") setTimeout(openApp,0);
+
+/* — строим боковое меню — */
+function buildMenu(){
+  document.getElementById("menu").innerHTML=SECTIONS.map(s=>
+    `<a class="mi" href="#${s.hash}" data-sec="${s.id}">
+       <span class="mic">${s.ic}</span><span class="mt">${s.nm}</span>
+       ${s.badge?`<span class="badge" data-bd="${s.badge}" style="display:none">0</span>`:""}
+     </a>`).join("");
+}
+/* — строим нижний таб-бар (только разделы с tab≠null) — */
+function buildTabbar(){
+  const items=SECTIONS.filter(s=>s.tab);
+  document.getElementById("tabbar").innerHTML=items.map(s=>
+    `<button class="tb" data-sec="${s.id}" onclick="navigate('${s.id}')">
+       <span class="tbi">${s.ic}</span><span class="tbt">${s.tab}</span>
+       ${s.badge?`<span class="tbdot" data-bd2="${s.badge}" style="display:none"></span>`:""}
+     </button>`).join("");
+}
+/* — переключение раздела (через изменение hash → route) — */
+function navigate(secId){
+  const s=SECTIONS.find(x=>x.id===secId)||SECTIONS[0];
+  if(("#"+s.hash)===location.hash){ showSection(secId); } // тот же hash — просто показать
+  else location.hash=s.hash;                              // иначе hashchange→route
+  closeMenu();
+}
+/* — читаем hash, показываем нужный раздел — */
+function route(){
+  const h=decodeURIComponent(location.hash.replace(/^#/,"")).trim();
+  const s=SECTIONS.find(x=>x.hash===h);
+  showSection(s?s.id:DEFAULT_SEC);
+}
+/* — показать ОДНУ панель, подсветить пункты меню/таб-бара — */
+function showSection(secId){
+  CUR_SEC=secId;
+  const meta=SECTIONS.find(x=>x.id===secId)||SECTIONS[0];
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===secId));
+  document.querySelectorAll("#menu .mi").forEach(a=>a.classList.toggle("active",a.dataset.sec===secId));
+  document.querySelectorAll("#tabbar .tb").forEach(b=>b.classList.toggle("active",b.dataset.sec===secId));
+  const sec=document.getElementById(secId);
+  const title=(sec&&sec.dataset.title)||meta.nm;
+  document.getElementById("phTitle").textContent=title;
+  document.getElementById("mtitle").textContent=meta.nm;
+  // под-заголовок: для «Сегодня» — дата; иначе пусто
+  document.getElementById("phSub").textContent=(secId==="s-today")?("· действия дня "+dm(T0)):"";
+  document.getElementById("main").scrollTop=0; window.scrollTo(0,0);
+}
+function toggleMenu(){ document.body.classList.toggle("menu-open"); }
+function closeMenu(){ document.body.classList.remove("menu-open"); }
 
 /* gviz: q — строка запроса (gid=… или sheet=…&headers=1); id — таблица */
 async function gviz(id,q){
@@ -291,8 +445,67 @@ const T=new Date(),T0=new Date(T.getFullYear(),T.getMonth(),T.getDate());
 const days=(a,b)=>Math.round((a-b)/864e5);
 const dm=d=>String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0");
 
-function render(){ rToday(); rTasks(); rFunnel(); rLadder(); rPipes(); rSkills(); rLinks(); rSources(); rClinics();
-  document.getElementById("hdate").textContent=dm(T0); }
+function render(){ rToday(); rTasks(); rFunnel(); rReels(); rLadder(); rPipes(); rSkills(); rLinks(); rSources(); rClinics();
+  updateBadges();
+  // обновить под-заголовок «Сегодня», если он сейчас открыт (дата уже выставляется в showSection)
+}
+
+/* Бейджи на меню/таб-баре: «Сегодня» = горящих сделок, «Задачи» = горящих задач (просрочка/вопрос) */
+function badgeCounts(){
+  const open=DATA.deals.filter(d=>d.contact&&!String(d.status||"").includes("закрыт"));
+  const todayN=open.filter(d=>{const due=pd(d.due);return (due&&due<=T0)||String(d.status).trim()==="новое";}).length;
+  const work=DATA.tasks.filter(t=>String(t["задача"]||"").trim()&&statusKind(t["статус"])!=="princ");
+  const tasksN=work.filter(t=>{
+    if(statusKind(t["статус"])==="done") return false;
+    const due=pd(t["дедлайн"]); const k=statusKind(t["статус"]);
+    return (due&&due<T0)||(k==="todo"&&String(t["статус"]).toLowerCase().includes("вопрос"));
+  }).length;
+  return {today:todayN,tasks:tasksN};
+}
+function updateBadges(){
+  const c=badgeCounts();
+  document.querySelectorAll("[data-bd]").forEach(b=>{
+    const n=c[b.dataset.bd]||0; b.textContent=n; b.style.display=n?"flex":"none";
+  });
+  document.querySelectorAll("[data-bd2]").forEach(d=>{
+    const n=c[d.dataset.bd2]||0; d.style.display=n?"block":"none";
+  });
+}
+
+/* Раздел «Рилсы» — 3 пилотных сценария (статика) + кнопка на Гугл-док с раскадровками. */
+const REELS_DOC="https://docs.google.com/document/d/1V6M0157mHoF3nBabED_L84HCCZ78mCL2A-LPnB62TWc/edit";
+function rReels(){
+  const STATUS={ready:{cls:"rs-ready",t:"сценарий готов"},shoot:{cls:"rs-shoot",t:"съёмка"},live:{cls:"rs-live",t:"выложен"}};
+  const R=[
+    {nm:"Сколько на самом деле зарабатывает владелец",
+     meta:"Из рубля выручки собственнику доходит ~10 копеек · ~42 сек · S1 + холодная лента",
+     hook:"Пациент думает, что владелец клиники на порше. Сейчас покажу на одном рубле, куда этот рубль уходит.",
+     st:"ready"},
+    {nm:"Фикса или процент. Почему я не выбираю сторону",
+     meta:"Правильной стороны нет, решает город и доля маркетинга · ~41 сек · S1/S2",
+     hook:"Кариес стоит тринадцать тысяч. Доктор за него начал получать две.",
+     st:"ready"},
+    {nm:"Куратор за 150 тысяч получает больше врача",
+     meta:"Считай цифру роли, а не оклад: окупается или балласт · ~45 сек · S1 + врачи",
+     hook:"Куратор получил сто пятьдесят, а врач после сложной эндодонтии меньше. Где ошибка.",
+     st:"ready"},
+  ];
+  const cards=R.map((r,i)=>{
+    const s=STATUS[r.st]||STATUS.ready;
+    return `<div class="card reel">
+      <div class="rh">
+        <div class="rn">${i+1}</div>
+        <div class="rt"><div class="rtitle">${esc(r.nm)}</div><div class="rmeta">${esc(r.meta)}</div></div>
+        <span class="rstat ${s.cls}">${s.t}</span>
+      </div>
+      <div class="rhook"><div class="rhk-l">Хук</div><div class="rhk-t">«${esc(r.hook)}»</div></div>
+    </div>`;
+  }).join("");
+  const btn=`<a class="btn-sec" href="${REELS_DOC}" target="_blank" rel="noopener"
+       style="justify-content:center;width:100%;padding:13px;margin-top:2px;background:var(--navy);color:#fff;border-color:transparent;font-size:14px">
+       📄 Открыть сценарии (полные раскадровки)</a>`;
+  document.getElementById("reels").innerHTML=cards+btn;
+}
 
 /* 1. Сегодня — из deals */
 function rToday(){
@@ -511,9 +724,9 @@ function rSkills(){
 
 /* 7. Ссылки — из вкладки `ссылки`, сгруппированы по категории */
 function rLinks(){
-  const ic={"дашборд":"📊","папка":"📁","таблица":"📋","продажи":"🎓","лендинг":"🛒","канал":"✈️","аналитика":"📈"};
+  const ic={"дашборд":"📊","папка":"📁","таблица":"📋","продажи":"🎓","лендинг":"🛒","канал":"✈️","аналитика":"📈","контент":"🎬"};
   const rows=DATA.links.filter(l=>String(l.url||"").trim());
-  const order=["дашборд","лендинг","канал","продажи","аналитика","таблица","папка"];
+  const order=["дашборд","лендинг","канал","контент","продажи","аналитика","таблица","папка"];
   const groups={};
   rows.forEach(l=>{const c=String(l["категория"]||"прочее").trim();(groups[c]=groups[c]||[]).push(l);});
   const cats=Object.keys(groups).sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib);});
