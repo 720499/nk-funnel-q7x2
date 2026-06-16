@@ -201,6 +201,38 @@
   .reel .rhk-l{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700;margin-bottom:3px}
   .reel .rhk-t{font-size:14.5px;line-height:1.4;font-weight:600;color:var(--ink)}
   @media(prefers-color-scheme:dark){.rs-ready{background:#1E3A5F;color:#9FB6D6}}
+  /* — Контент-конвейер — */
+  /* Сводка воронки касаний (по опубликованным) */
+  .cvfunnel{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+  .cvf{padding:11px 10px;text-align:center}
+  .cvf .cvn{font-size:22px;font-weight:800;color:var(--teal-d);font-variant-numeric:tabular-nums;line-height:1.05}
+  .cvf .cvl{font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.03em;font-weight:700;margin-top:3px;line-height:1.2}
+  @media(max-width:620px){.cvfunnel{grid-template-columns:repeat(3,1fr)}}
+  /* Группа стадии */
+  .cvstage{margin-bottom:13px}
+  .cvshead{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid var(--line)}
+  .cvshead .cvsi{font-size:15px;flex:none}
+  .cvshead .cvsn{font-weight:800;font-size:14.5px;flex:1;min-width:0}
+  .cvshead .cvsc{font-variant-numeric:tabular-nums;font-weight:700;font-size:12.5px;color:var(--mut);white-space:nowrap}
+  /* Карточка ролика */
+  .cvitem{display:flex;gap:11px;padding:11px 14px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .cvitem:last-child{border-bottom:0}
+  .cvitem .cvv{flex:none;width:34px;height:30px;border-radius:8px;background:var(--navy);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .cvitem .cvb{flex:1;min-width:0}
+  .cvitem .cvt{font-weight:700;font-size:14px;line-height:1.3}
+  .cvitem .cvm{font-size:12px;color:var(--mut);margin-top:3px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .cvitem .cvm .pl{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#EEF3F9;color:#13315C}
+  @media(prefers-color-scheme:dark){.cvitem .cvm .pl,.cvf .cvchip{background:#16273D;color:#9FB6D6}}
+  .cvitem .cvm .slot{color:var(--navy2);font-weight:600}
+  .cvitem .cvm .slot.soon{color:var(--amber);font-weight:700}
+  .cvitem .cvopen{flex:none;color:var(--teal-d);font-size:12px;margin-top:1px;text-decoration:none;font-weight:700}
+  .cvitem .cvmet{font-size:11.5px;color:var(--mut);margin-top:4px;font-variant-numeric:tabular-nums}
+  /* Разбивка по площадкам */
+  .cvplat{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .cvp{padding:11px 12px}
+  .cvp .cvpn{font-weight:700;font-size:13.5px;display:flex;align-items:center;gap:7px}
+  .cvp .cvps{font-size:12px;color:var(--mut);margin-top:5px;line-height:1.4}
+  @media(max-width:620px){.cvplat{grid-template-columns:1fr}}
   /* ───────────────── Мобайл: sidebar прячется, низ — таб-бар ───────────────── */
   @media(max-width:760px){
     #side{transform:translateX(-100%);transition:transform .25s ease;width:240px;box-shadow:0 0 40px rgba(0,0,0,.4)}
@@ -288,6 +320,16 @@
       <div class="note">Пилот: 3 рилса под угол ниши (экономика и управление клиникой). CTA всех — «Напиши РАЗБОР в комментарии». Полные раскадровки — в Гугл-доке.</div>
     </section>
 
+    <section class="panel" id="s-conveyor" data-title="Контент-конвейер">
+      <h2>Воронка касаний <span class="hd">по опубликованным</span></h2>
+      <div class="cvfunnel" id="cv-funnel"></div>
+      <h2 style="margin-top:20px">Ролики по стадиям</h2>
+      <div id="cv-stages"></div>
+      <h2 style="margin-top:20px">По площадкам</h2>
+      <div class="cvplat" id="cv-plat"></div>
+      <div class="note">Из листа «Конвейер» (<code>gviz</code>). Стадии: сырьё → нарезка → финал → запланирован → опубликован. Сводка касаний суммирует метрики только по опубликованным роликам — растёт по мере заполнения колонок охват…продажи.</div>
+    </section>
+
     <section class="panel" id="s-ladder" data-title="Лестница продуктов">
       <div class="card" id="ladder"></div>
     </section>
@@ -336,8 +378,10 @@ const SHEET_ID="1h6xTK6FNMyKA25oLvj0ppgjMKFg0SXkOzSPNA9w3FVw";
 const GIDS={posts:479830602,sales:1183168611}; // deals — по имени листа
 /* Штаб (задачи/скиллы/ссылки) — отдельная таблица «Штаб Никадемии» */
 const SHTAB_ID="13xisJHEUstFLGQHANcb0hkEE8vXTOXfl3cO-y6leA2A";
+/* Контент-конвейер — отдельная таблица «Конвейер» (вкладка «Конвейер») */
+const CONVEYOR_ID="1kpMzIxzEAqEIC7IeWISp1l6yiRI2JNfprC9zlHm8QXo";
 const KEY="shtab_voronka_cache";
-let DATA={posts:[],sales:[],deals:[],tasks:[],skills:[],links:[],sources:[]};
+let DATA={posts:[],sales:[],deals:[],tasks:[],skills:[],links:[],sources:[],conveyor:[]};
 
 /* ─────────── SPA-навигация: модель разделов ───────────
    id   — id <section> панели; hash — якорь в URL; ic — иконка; nm — подпись в меню;
@@ -347,6 +391,7 @@ const SECTIONS=[
   {id:"s-tasks",  hash:"задачи",   ic:"✅", nm:"Задачи",           tab:"Задачи",  badge:"tasks"},
   {id:"s-funnel", hash:"воронка",  ic:"💰", nm:"Воронка деньгами", tab:"Воронка"},
   {id:"s-reels",  hash:"рилсы",    ic:"🎬", nm:"Рилсы",            tab:"Рилсы"},
+  {id:"s-conveyor",hash:"конвейер",ic:"🎞️", nm:"Контент-конвейер", tab:"Конвейер"},
   {id:"s-ladder", hash:"лестница", ic:"🪜", nm:"Лестница продуктов",tab:null},
   {id:"s-pipes",  hash:"каналы",   ic:"🚇", nm:"Трубы каналов",    tab:null},
   {id:"s-skills", hash:"скиллы",   ic:"🤖", nm:"Скиллы",           tab:null},
@@ -430,7 +475,7 @@ async function gviz(id,q){
 }
 async function loadData(){
   try{
-    const [posts,sales,deals,tasks,skills,links,sources]=await Promise.all([
+    const [posts,sales,deals,tasks,skills,links,sources,conveyor]=await Promise.all([
       gviz(SHEET_ID,"gid="+GIDS.posts),
       gviz(SHEET_ID,"gid="+GIDS.sales),
       gviz(SHEET_ID,"sheet=deals&headers=1"),
@@ -438,8 +483,9 @@ async function loadData(){
       gviz(SHTAB_ID,"sheet="+encodeURIComponent("скиллы")+"&headers=1"),
       gviz(SHTAB_ID,"sheet="+encodeURIComponent("ссылки")+"&headers=1"),
       gviz(SHTAB_ID,"sheet="+encodeURIComponent("источники-данных")+"&headers=1"),
+      gviz(CONVEYOR_ID,"sheet="+encodeURIComponent("Конвейер")+"&headers=1").catch(()=>[]),
     ]);
-    DATA={posts,sales,deals,tasks,skills,links,sources};
+    DATA={posts,sales,deals,tasks,skills,links,sources,conveyor};
     localStorage.setItem(KEY,JSON.stringify(DATA));
     document.getElementById("updated").textContent="обновлено "+new Date().toLocaleString("ru-RU")+" · из Google-таблиц";
   }catch(e){
@@ -458,7 +504,7 @@ const T=new Date(),T0=new Date(T.getFullYear(),T.getMonth(),T.getDate());
 const days=(a,b)=>Math.round((a-b)/864e5);
 const dm=d=>String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0");
 
-function render(){ rToday(); rTasks(); rFunnel(); rReels(); rLadder(); rPipes(); rSkills(); rSkillCat(); rLinks(); rSources(); rClinics();
+function render(){ rToday(); rTasks(); rFunnel(); rReels(); rConveyor(); rLadder(); rPipes(); rSkills(); rSkillCat(); rLinks(); rSources(); rClinics();
   updateBadges();
   // обновить под-заголовок «Сегодня», если он сейчас открыт (дата уже выставляется в showSection)
 }
@@ -518,6 +564,113 @@ function rReels(){
        style="justify-content:center;width:100%;padding:13px;margin-top:2px;background:var(--navy);color:#fff;border-color:transparent;font-size:14px">
        📄 Открыть сценарии (полные раскадровки)</a>`;
   document.getElementById("reels").innerHTML=cards+btn;
+}
+
+/* 4b. Контент-конвейер — из листа «Конвейер» (отдельная таблица).
+   Колонки A→R: roll_id raw вариант длит_сек тема_хук площадка стадия слот_план
+   ссылка_публикации охват просмотры вовлечение комментов РАЗБОР_комментов лиды продажи решение заметка.
+   Рендерит: (а) сводку воронки касаний по опубликованным, (б) ролики по стадиям, (в) разбивку по площадкам. */
+const CV_STAGES=[
+  {key:"сыр",   nm:"Сырьё",        ic:"🎥"},
+  {key:"нарез", nm:"Нарезка",      ic:"✂️"},
+  {key:"финал", nm:"Финал",        ic:"✅"},
+  {key:"заплан",nm:"Запланирован", ic:"🗓"},
+  {key:"опубл", nm:"Опубликован",  ic:"🚀"},
+];
+function cvStageIdx(s){
+  s=String(s||"").toLowerCase().trim();
+  for(let i=0;i<CV_STAGES.length;i++) if(s.includes(CV_STAGES[i].key)) return i;
+  return -1; // незнакомая стадия → «прочее»
+}
+/* слот может прийти как форматированная строка («16.06.2026 19:15») или как литерал Date(Y,M,D,h,m,s) */
+function cvSlot(v){
+  if(!v) return null;
+  const s=String(v);
+  let m=s.match(/Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+)(?:,(\d+))?)?\)/);
+  if(m) return new Date(+m[1],+m[2],+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0));
+  m=s.match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}):(\d{2}))?/); // ISO YYYY-MM-DD [HH:MM] (gviz cell.f даёт его)
+  if(m) return new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0));
+  m=s.match(/(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})(?:[ T](\d{1,2}):(\d{2}))?/); // DD.MM.YYYY [HH:MM]
+  if(m) return new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0));
+  return null;
+}
+const dt=d=>dm(d)+(((d.getHours()||d.getMinutes())?" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"):""));
+function rConveyor(){
+  const rows=DATA.conveyor.filter(r=>String(r["roll_id"]||"").trim());
+  const pubKey=CV_STAGES[4].key;
+  const isPub=r=>cvStageIdx(r["стадия"])===4;
+
+  /* (а) Сводка воронки касаний — сумма по опубликованным */
+  const pub=rows.filter(isPub);
+  const sum=f=>pub.reduce((s,r)=>s+num(r[f]),0);
+  const F=[
+    {l:"охват",   v:sum("охват")},
+    {l:"вовлечение",v:sum("вовлечение")},
+    {l:"РАЗБОР",  v:sum("РАЗБОР_комментов")},
+    {l:"лиды",    v:sum("лиды")},
+    {l:"продажи", v:sum("продажи")},
+  ];
+  const fHtml=F.map(x=>`<div class="card cvf"><div class="cvn">${x.v.toLocaleString("ru-RU")}</div><div class="cvl">${x.l}</div></div>`).join("");
+  document.getElementById("cv-funnel").innerHTML=pub.length
+    ? fHtml
+    : `<div class="card cvf" style="grid-column:1/-1;color:var(--mut);font-weight:600">Пока нет опубликованных роликов — сводка появится после первой публикации.</div>`;
+
+  /* (б) Ролики по стадиям */
+  const buckets=CV_STAGES.map(()=>[]); const other=[];
+  rows.forEach(r=>{const i=cvStageIdx(r["стадия"]); (i>=0?buckets[i]:other).push(r);});
+  const itemRow=r=>{
+    const variant=esc(r["вариант"]||r["roll_id"]);
+    const hook=esc(r["тема_хук"]||r["raw"]||"—");
+    const plat=String(r["площадка"]||"").trim();
+    const url=String(r["ссылка_публикации"]||"").trim();
+    const slot=cvSlot(r["слот_план"]);
+    const soon=slot&&slot>=T&&days(slot,T0)<=1; // сегодня/завтра
+    const slotHtml=slot?`<span class="slot${soon?" soon":""}">🕒 ${dt(slot)}</span>`:"";
+    /* метрики показываем только если опубликован И есть хоть одна цифра */
+    let met="";
+    if(isPub(r)){
+      const parts=[];
+      const v=num(r["просмотры"])||num(r["охват"]); if(v)parts.push(v.toLocaleString("ru-RU")+" просм");
+      const e=num(r["вовлечение"]); if(e)parts.push(e+" вовлеч");
+      const rz=num(r["РАЗБОР_комментов"]); if(rz)parts.push(rz+" РАЗБОР");
+      const ld=num(r["лиды"]); if(ld)parts.push(ld+" лид"+plur(ld,"","а","ов"));
+      const sl=num(r["продажи"]); if(sl)parts.push(sl+" прод");
+      if(parts.length) met=`<div class="cvmet">${parts.join(" · ")}</div>`;
+    }
+    return `<div class="cvitem">
+      <div class="cvv">${variant}</div>
+      <div class="cvb">
+        <div class="cvt">${hook}</div>
+        <div class="cvm">${plat?`<span class="pl">${esc(plat)}</span>`:""}${slotHtml}${url?`<a class="cvopen" href="${esc(url)}" target="_blank" rel="noopener">смотреть ↗</a>`:""}</div>
+        ${met}
+      </div>
+    </div>`;
+  };
+  const stageCard=(meta,items)=>items.length?`<div class="card cvstage">
+      <div class="cvshead"><span class="cvsi">${meta.ic}</span><span class="cvsn">${meta.nm}</span><span class="cvsc">${items.length} ${plur(items.length,"ролик","ролика","роликов")}</span></div>
+      ${items.map(itemRow).join("")}
+    </div>`:"";
+  let stagesHtml=CV_STAGES.map((m,i)=>stageCard(m,buckets[i])).join("");
+  if(other.length) stagesHtml+=stageCard({ic:"📌",nm:"Прочее"},other);
+  document.getElementById("cv-stages").innerHTML=stagesHtml||`<div class="card"><div class="allgood">Конвейер пуст 🟢</div></div>`;
+
+  /* (в) Разбивка по площадкам */
+  const PLAT=[
+    {ic:"📸",nm:"Instagram",match:["ig","insta","инст"]},
+    {ic:"🎵",nm:"TikTok",   match:["tik","ток"]},
+    {ic:"▶️",nm:"YouTube",  match:["you","ютуб","yt","shorts","шортс"]},
+    {ic:"🇻",nm:"VK",       match:["vk","вк","клипы"]},
+  ];
+  const platOf=r=>{const p=String(r["площадка"]||"").toLowerCase();return PLAT.findIndex(x=>x.match.some(m=>p.includes(m)));};
+  const platHtml=PLAT.map((P,i)=>{
+    const inP=rows.filter(r=>platOf(r)===i);
+    if(!inP.length) return `<div class="card cvp"><div class="cvpn">${P.ic} ${P.nm}</div><div class="cvps">нет роликов</div></div>`;
+    const pubInP=inP.filter(isPub);
+    const reach=pubInP.reduce((s,r)=>s+(num(r["охват"])||num(r["просмотры"])),0);
+    const st=`${inP.length} ${plur(inP.length,"ролик","ролика","роликов")} · ${pubInP.length} опубл`+(reach?` · ${reach.toLocaleString("ru-RU")} охват`:"");
+    return `<div class="card cvp"><div class="cvpn">${P.ic} ${P.nm}</div><div class="cvps">${st}</div></div>`;
+  }).join("");
+  document.getElementById("cv-plat").innerHTML=platHtml;
 }
 
 /* 1. Сегодня — из deals */
@@ -792,6 +945,20 @@ function rSkillCat(){
       {nm:"transcribe_local.py",isNew:true,ds:"пословная транскрипция (faster-whisper large-v3, offline) — ground-truth для нарезки/субтитров.",
        trg:``},
       {nm:"cut_from_words.py",isNew:true,ds:"детерминированный рез рилса по анкер-фразам (в середину паузы).",
+       trg:``},
+    ]},
+    {ic:"🦷",nm:"ПроДокторов-аудит (движок · только код)",items:[
+      {nm:"pd_audit.py",isNew:true,ds:"сбор+анализ карточки ПД → audit.json (метрики, гео-радиус 10км, отзывы по месяцам, оценка 730, рейтинги соседей с карточек, --lk реальный кабинет). Ноль ИИ-чисел.",
+       trg:`<code>pd_audit.py --lpu &lt;id&gt; --city &lt;город&gt; [--lk]</code>`},
+      {nm:"pd_render.py",isNew:true,ds:"рендер из audit.json: full/kp (болевой КП-лендинг), public_seo, pdf, roadmap (Часть 2 из ЛК).",
+       trg:`<code>pd_render.py --audit audit.json --mode full|roadmap</code>`},
+      {nm:"pd_deploy_audit.py",isNew:true,ds:"деплой за Caddy basic_auth + карточка в «Анализы клиник».",
+       trg:`<code>pd_deploy_audit.py --slug &lt;s&gt; --full index.html --no-anon</code>`},
+      {nm:"pd_selfcheck.py",isNew:true,ds:"страж «только код»: нет LLM · контракт полей audit.json · приближения помечены. Замыкает регресс к ИИ-гаданиям.",
+       trg:`<code>pd_selfcheck.py --audit audit.json --render-out /tmp/sc</code>`},
+      {nm:"pd_brand_serp.py",ds:"брендовая выдача Яндекс/Google (Playwright + режим yandex-api).",
+       trg:``},
+      {nm:"pd_collect.py / pd_screens.py",ds:"сбор данных/скринов ЛК READ-ONLY (параметризовано --lpu/--state под любого клиента).",
        trg:``},
     ]},
     {ic:"🛠",nm:"Инфраструктура",items:[
