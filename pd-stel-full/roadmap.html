@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Цифровой Стоматологический Комплекс — дорожная карта ПроДокторов (Часть 2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c-text:#1A1A1A; --c-body:#2C2C2C; --c-muted:#666666;
+    --c-bg:#FFFFFF; --c-accent:#0B1F3A; --c-hairline:#E5E5E5;
+    --c-rule:#CCCCCC; --c-ctx:#F7F7F7;
+    --c-red:#B23A2E; --c-redbg:#FBF2F0; --c-amber:#B5781F; --c-green:#2E6B3E;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0; background:var(--c-bg); color:var(--c-body);
+    font-family:'PT Sans',sans-serif; font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px;}
+  h1,h2,h3{font-family:'PT Serif',serif; color:var(--c-text); font-weight:700; letter-spacing:-0.01em;}
+  h1{font-size:34px; line-height:1.18; margin:0 0 14px;}
+  h2{font-size:25px; line-height:1.25; margin:0 0 6px;}
+  h3{font-size:18px; margin:0 0 6px;}
+  p{margin:0 0 14px;}
+  a{color:var(--c-accent); text-decoration:none; border-bottom:1px solid rgba(11,31,58,.25);}
+  a:hover{border-bottom-color:var(--c-accent);}
+  .muted{color:var(--c-muted);}
+  .eyebrow{font-family:'PT Sans',sans-serif; font-weight:700; font-size:12px; text-transform:uppercase;
+    letter-spacing:0.14em; color:var(--c-accent); margin:0 0 12px;}
+  header.hero{padding:60px 0 38px; border-bottom:1px solid var(--c-rule);}
+  .hero .meta{font-size:15px; color:var(--c-muted); margin:0;}
+  .hero .lead{font-size:18px; color:var(--c-body); margin:18px 0 0; max-width:740px;}
+  .hero .stamp{display:inline-block; margin-top:22px; font-size:14px; color:var(--c-muted);
+    border-left:2px solid var(--c-accent); padding:4px 0 4px 14px;}
+  section{padding:40px 0; border-bottom:1px solid var(--c-hairline);}
+  section:last-of-type{border-bottom:none;}
+  .lead-p{font-size:17px; color:var(--c-body); margin:0 0 22px; max-width:740px;}
+  /* KPI bar */
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:6px 0 4px;}
+  .kpi{border:1px solid var(--c-hairline); border-radius:6px; padding:16px 18px;}
+  .kpi .big{font-family:'PT Serif',serif; font-weight:700; color:var(--c-accent); font-size:26px; line-height:1.1;}
+  .kpi .lbl{font-size:13px; color:var(--c-muted); text-transform:uppercase; letter-spacing:.05em; margin:6px 0 0;}
+  /* tables */
+  .tablewrap{overflow-x:auto; margin:0 -2px;}
+  table{width:100%; border-collapse:collapse; font-size:15px; min-width:560px;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--c-hairline); vertical-align:top;}
+  th{font-family:'PT Sans',sans-serif; font-weight:700; color:var(--c-text); font-size:12px;
+    text-transform:uppercase; letter-spacing:0.07em; border-bottom:1.5px solid var(--c-rule);}
+  td.num{white-space:nowrap; font-weight:700; color:var(--c-text);}
+  tr.ours{background:#F4EFE6;}
+  tr.ours td{font-weight:700;}
+  tr.leader td.lead-cell{color:var(--c-accent); font-weight:700;}
+  .srcnote{font-size:13px; color:var(--c-muted); margin-top:8px;}
+  /* checklist */
+  ul.check{list-style:none; margin:6px 0 0; padding:0;}
+  ul.check li{padding:13px 0; border-bottom:1px solid var(--c-hairline); display:flex; gap:14px; align-items:baseline;}
+  ul.check li:last-child{border-bottom:none;}
+  ul.check .ci{flex:1;} ul.check .ci b{color:var(--c-text);} ul.check .ci .note{color:var(--c-muted); font-size:14px;}
+  .chip{display:inline-block; font-family:'PT Sans',sans-serif; font-weight:700; font-size:12px;
+    padding:2px 9px; border-radius:11px; white-space:nowrap; background:#EEF1F4; color:var(--c-muted); min-width:96px; text-align:center;}
+  .chip.ok{background:#EDF4EE; color:var(--c-green);}
+  .chip.no{background:var(--c-redbg); color:var(--c-red);}
+  .chip.part{background:#FBF6EC; color:var(--c-amber);}
+  /* red bottleneck block */
+  .danger{background:var(--c-redbg); border-left:3px solid var(--c-red); padding:22px 24px; margin:16px 0 0; border-radius:0 4px 4px 0;}
+  .danger .eyebrow{color:var(--c-red);} .danger h3{color:var(--c-red); margin-top:0;}
+  .danger ul{margin:8px 0 0; padding-left:18px;} .danger li{margin:0 0 7px;} .danger li:last-child{margin-bottom:0;}
+  .ctx{background:var(--c-ctx); border-left:3px solid var(--c-accent); padding:22px 24px; margin:16px 0 0;}
+  .ctx h2,.ctx h3{margin-top:0;} .ctx p:last-child{margin-bottom:0;}
+  /* screenshots */
+  .shot{margin:14px 0 6px;}
+  .shot img{width:100%; height:auto; display:block; border:1px solid var(--c-hairline); border-radius:6px;}
+  .shot figcaption{font-size:13px; color:var(--c-muted); margin-top:8px;}
+  .pair{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:14px 0 6px;}
+  .pair figure{margin:0;}
+  .pair img{width:100%; height:auto; display:block; border:1px solid var(--c-hairline); border-radius:6px;}
+  .pair figcaption{font-size:13px; color:var(--c-muted); margin-top:8px;}
+  .mob{display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:560px; margin:14px 0 6px;}
+  .mob figure{margin:0;}
+  .mob img{width:100%; height:auto; display:block; border:1px solid var(--c-hairline); border-radius:6px;}
+  .mob figcaption{font-size:13px; color:var(--c-muted); margin-top:8px;}
+  /* 730 estimate band */
+  .scoreband{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin:6px 0 4px;}
+  .scoreband .num{font-family:'PT Serif',serif; font-weight:700; color:var(--c-accent); font-size:38px; line-height:1;}
+  .scoreband .of{font-size:18px; color:var(--c-muted);}
+  .scoreband .tag{font-size:13px; color:var(--c-muted); background:#EEF1F4; padding:3px 10px; border-radius:11px;}
+  .scoretrack{height:14px; background:#EEF1F4; border-radius:7px; overflow:hidden; margin:14px 0 4px; position:relative;}
+  .scoretrack .sure{position:absolute; left:0; top:0; bottom:0; background:var(--c-accent);}
+  .scoretrack .band{position:absolute; top:0; bottom:0; background:rgba(11,31,58,.28);}
+  .basis{font-family:'PT Sans',sans-serif; font-weight:700; font-size:11px; padding:2px 8px; border-radius:10px; white-space:nowrap;}
+  .basis.sure{background:#EDF4EE; color:var(--c-green);}
+  .basis.est{background:#FBF6EC; color:var(--c-amber);}
+  .basis.lk{background:var(--c-redbg); color:var(--c-red);}
+  /* educational list */
+  ul.edu{list-style:none; margin:6px 0 0; padding:0;}
+  ul.edu li{padding:13px 0; border-bottom:1px solid var(--c-hairline);}
+  ul.edu li:last-child{border-bottom:none;}
+  ul.edu .et{font-family:'PT Serif',serif; font-weight:700; color:var(--c-text); font-size:16px; margin:0 0 3px;}
+  ul.edu .ed{font-size:15px; color:var(--c-body); margin:0;} ul.edu .ed b{color:var(--c-text);}
+  /* CTA */
+  .cta{background:var(--c-accent); color:#fff; border-radius:8px; padding:30px 28px; margin:16px 0 0;}
+  .cta h2{color:#fff; margin:0 0 8px;}
+  .cta p{color:#E7ECF2; margin:0 0 18px; max-width:640px;}
+  .cta a.btn{display:inline-block; background:#fff; color:var(--c-accent); font-family:'PT Sans',sans-serif;
+    font-weight:700; font-size:16px; padding:13px 26px; border-radius:6px; border:none;}
+  .cta a.btn:hover{background:#EEF1F4;}
+  /* legal */
+  .legal{font-size:13.5px; color:var(--c-muted); line-height:1.6;}
+  .legal b{color:var(--c-body);}
+  footer.sig{padding:32px 0 60px; color:var(--c-muted); font-size:14px;}
+  footer.sig b{color:var(--c-text); font-family:'PT Serif',serif;}
+  /* КП: вердикт-блок, строки-провалы, сводка пробелов */
+  tr.gap td{background:var(--c-redbg);}
+  tr.gain td{background:#EDF4EE;}
+  .verdict .row{display:flex; gap:30px; flex-wrap:wrap; margin-top:10px;}
+  .verdict .row .it .v{font-family:'PT Serif',serif; font-weight:700; color:var(--c-accent); font-size:25px; line-height:1.1;}
+  .verdict .row .it .v.red{color:var(--c-red);}
+  .verdict .row .it .k{font-size:13px; color:var(--c-muted); margin-top:2px;}
+  .gaps{background:var(--c-redbg); border-left:3px solid var(--c-red); padding:18px 22px; margin:20px 0 0; border-radius:0 4px 4px 0;}
+  .gaps h3{color:var(--c-red); margin:0 0 8px;} .gaps ul{margin:0; padding-left:18px;}
+  .gaps li{margin:0 0 7px;} .gaps li:last-child{margin-bottom:0;}
+  .evid{display:grid; grid-template-columns:1fr; gap:18px; margin:16px 0 6px;}
+  .evid figure{margin:0;} .evid img{width:100%; height:auto; display:block; border:1px solid var(--c-hairline); border-radius:6px;}
+  .evid figcaption{font-size:14px; color:var(--c-body); margin-top:8px;} .evid figcaption b{color:var(--c-text);}
+  /* сравнение «лбами»: 2 колонки take/beat + pull-quote + таргет-колонка */
+  .cols2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0 0;}
+  .card{border:1px solid var(--c-hairline); border-radius:6px; padding:18px 20px;}
+  .card.take{border-top:3px solid var(--c-amber);} .card.beat{border-top:3px solid var(--c-green);}
+  .card h3{margin:0 0 10px; font-size:16px;} .card ul{margin:0; padding-left:18px;}
+  .card li{margin:0 0 8px; font-size:15px;} .card li:last-child{margin-bottom:0;}
+  .quote{font-family:'PT Serif',serif; font-style:italic; font-size:19px; color:var(--c-text);
+    border-left:3px solid var(--c-accent); padding:6px 0 6px 18px; margin:20px 0 0;}
+  td.t-now{font-weight:700;} td.t-goal{color:var(--c-green); font-weight:700; white-space:nowrap;}
+  .win{color:var(--c-green); font-weight:700;} .lose{color:var(--c-red); font-weight:700;}
+  .gapcol{font-size:13.5px; color:var(--c-body);} .gapcol b{color:var(--c-red);}
+  @media (max-width:680px){
+    .cols2{grid-template-columns:1fr;}
+    body{font-size:16px;} h1{font-size:26px;} h2{font-size:21px;}
+    .kpis{grid-template-columns:1fr 1fr;} .pair{grid-template-columns:1fr;}
+    .mob{grid-template-columns:1fr;} .chip{min-width:0;}
+    ul.check li{flex-direction:column; gap:4px;}
+  }
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+<p class="eyebrow">Часть 2 · дорожная карта из кабинета ПроДокторов</p>
+<h1>«Цифровой Стоматологический Комплекс»: дорожная карта по реальным данным кабинета</h1>
+<p class="meta">Dimitrovgrad · приватный документ для собственника · не публикуется</p>
+<p class="lead">Это уже не вид снаружи. Цифры ниже сняты из вашего личного кабинета ПроДокторов: точный балл ранжирования, реальные ставки аукциона по вашим разделам, тариф и успешность записи. По каждому пункту видно, где резерв и что добрать в первую очередь.</p>
+<span class="stamp">Снято из кабинета 16 июня 2026. Источник каждого блока — кабинет клиники [ЛК], read-only.</span>
+</div></header>
+<section><div class="wrap">
+<p class="eyebrow">Балл ранжирования из кабинета</p>
+<h2>Ваш реальный балл 82 из 730</h2>
+<div class="scoreband">
+<span class="num">82</span><span class="of">/ 730</span>
+<span class="tag">резерв до потолка 648</span>
+</div>
+<div class="scoretrack">
+<div class="sure" style="width:11.2%"></div>
+</div>
+<p class="lead-p" style="margin-top:14px;">Это точный балл из кабинета, не оценка снаружи. Ниже факторы отсортированы по размеру резерва — самый красный сверху, с него и начинаем.</p>
+<div class="tablewrap" style="margin-top:14px;"><table>
+<thead><tr><th>Фактор (правило ПроДокторов)</th><th>Сейчас</th><th>Потолок</th><th>Резерв</th><th>Что сделать</th></tr></thead><tbody>
+<tr class="gap"><td>Онлайн-запись на услуги</td><td><span class="chip no">✗ нет</span> <span class="num">0</span></td><td class="num">100</td><td><span class="t-goal">+100</span></td><td class="gapcol">открыть онлайн-запись на все услуги (интеграция МИС ↔ ПроДокторов)</td></tr>
+<tr class="gap"><td>Онлайн-запись к врачам</td><td><span class="chip no">✗ нет</span> <span class="num">0</span></td><td class="num">100</td><td><span class="t-goal">+100</span></td><td class="gapcol">открыть слоты онлайн-записи у каждого врача в карточке</td></tr>
+<tr class="gap"><td>Автоматическая выгрузка цен</td><td><span class="chip no">✗ нет</span> <span class="num">0</span></td><td class="num">100</td><td><span class="t-goal">+100</span></td><td class="gapcol">включить авто-выгрузку прайса из МИС (а не ручной список)</td></tr>
+<tr class="gap"><td>Успешность записи в клинику за 30 дней</td><td><span class="chip no">✗ нет</span> <span class="num">0</span></td><td class="num">100</td><td><span class="t-goal">+100</span></td><td class="gapcol">поднять долю состоявшихся записей (подтверждение, напоминания, работа администратора)</td></tr>
+<tr class="gap"><td>Клубная запись</td><td><span class="chip no">✗ нет</span> <span class="num">0</span></td><td class="num">70</td><td><span class="t-goal">+70</span></td><td class="gapcol">подключить Клуб ПроДокторов (клубная запись пациентов)</td></tr>
+<tr class="gap"><td>Звёздный рейтинг</td><td><span class="chip part">◐ частично</span> <span class="num">82</span></td><td class="num">150</td><td><span class="t-goal">+68</span></td><td class="gapcol">держать ровный поток свежих отзывов — вес отзыва падает за ~полгода</td></tr>
+<tr class="gap"><td>Запись по телефону</td><td><span class="chip no">✗ нет</span> <span class="num">0</span></td><td class="num">50</td><td><span class="t-goal">+50</span></td><td class="gapcol">подключить запись по телефону через площадку (коллтрекинг ПД)</td></tr>
+<tr class="gap"><td>Запись в клинику доступна не меньше 15 часов в сутки</td><td><span class="chip no">✗ нет</span> <span class="num">0</span></td><td class="num">50</td><td><span class="t-goal">+50</span></td><td class="gapcol">расширить окно доступной записи до ≥15 часов в сутки</td></tr>
+<tr class="gap"><td>Видеовизитка</td><td><span class="chip no">✗ нет</span> <span class="num">0</span></td><td class="num">10</td><td><span class="t-goal">+10</span></td><td class="gapcol">снять и загрузить видеовизитку клиники / врачей</td></tr>
+</tbody></table></div>
+<p class="srcnote">Баллы и факторы — точно из кабинета [ЛК]. Резерв = потолок − сейчас. Колонка «что сделать» — типовое действие по правилу ПроДокторов.</p>
+<div class="ctx" style="margin-top:16px;"><h3 style="margin-top:0;">Тариф кабинета</h3><p style="margin-bottom:0;">Текущий тариф кабинета — <b>«Лайт»</b>, действует до 16.06.2026, автопродление включено. «Лайт» — младший тариф: часть инструментов карточки и раздел Аналитика (в том числе коллтрекинг) на нём закрыты — это видно ниже.</p></div>
+</div></section>
+<section><div class="wrap">
+<p class="eyebrow">Раздвоенные карточки</p>
+<h2>Ваши отзывы застряли на закрытой карточке</h2>
+<p class="lead-p">На ПроДокторов у вас две карточки. На старой — ««Стоматология на Славского» (ранее «Стел»)
+Димитровград» — <b>26 отзывов и рейтинг None</b>, но она помечена «Клиника больше не работает». Живая карточка стартовала с нуля: 2 отзыва, рейтинг 2.5. Вся накопленная за годы пациентская история и рейтинг остались на закрытой карточке и не работают на вас.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Карточка</th><th>Статус</th><th>Отзывы</th><th>Рейтинг</th></tr></thead><tbody>
+<tr class="gap"><td>««Стоматология на Славского» (ранее «Стел»)
+Димитровград» (закрытая)</td><td>Клиника больше не работает</td><td class="num">26</td><td class="num">—</td></tr>
+<tr class="gain"><td>«Цифровой Стоматологический Комплекс» (живая)</td><td>работает</td><td class="num">2</td><td class="num">2.5</td></tr>
+</tbody></table></div>
+<div class="gaps"><h3>Что это значит</h3><p style="margin:0;"><b>26 отзывов и рейтинг None остались на закрытой карточке, живая стартовала с нуля.</b> Пациент, нашедший старую карточку, видит «Клиника больше не работает» и уходит; кто нашёл живую — видит 2 отзыва против десятков у соседей. Последний отзыв на старой карточке — 22 февраля 2013.</p></div>
+<p class="srcnote">Данные старой карточки 46670 — с публичной страницы ПроДокторов [публично]. Перенос/склейка отзывов между карточками — через поддержку ПроДокторов.</p>
+</div></section>
+<section><div class="wrap">
+<p class="eyebrow">Реальные ставки аукциона из кабинета</p>
+<h2>Спецразмещение: ваши ставки против ориентира</h2>
+<p class="lead-p">В Части 1 порядок ставок был дан образовательно — спецразмещение в крупном городе идёт примерно <b>от 1500 ₽ в сутки</b> за позицию (для понимания порядка). Здесь — ваши <b>реальные</b> ставки из кабинета по денежным разделам, где работает аукцион второй цены.</p>
+<p class="srcnote">Денежных ставок по разделам в кабинете не снято — нет данных.</p>
+<div class="ctx" style="margin-top:16px;"><h3 style="margin-top:0;">Разделы без участия в аукционе</h3><p style="margin-bottom:0;">В разделах Клиника (общий список), Врачи, Болезни, Диагностика, Услуги активных ставок спецразмещения у вас нет — вы в них не участвуете. Это законное «пусто», не пробел в данных. Если эти услуги для вас денежные, вход в аукцион — отдельное решение по бюджету.</p></div>
+</div></section>
+<section><div class="wrap">
+<p class="eyebrow">Успешность записи и коллтрекинг</p>
+<h2>Доходимость записи и звонки в карточку
+</h2>
+<div class="kpis">
+<div class="kpi"><div class="big">нет данных</div><div class="lbl">успешность записи · 30 дней</div></div>
+<div class="kpi"><div class="big">30</div><div class="lbl">дней в периоде</div></div>
+<div class="kpi"><div class="big">0 ₽ / 0 ₽</div><div class="lbl">кошелёк: лицензионный / рекламный</div></div>
+<div class="kpi"><div class="big">124–160 ₽</div><div class="lbl">цена записи (фикс)</div></div>
+</div>
+<p class="srcnote">Успешность записи в кабинете не снята — нет данных. Аналитика (вкл. коллтрекинг) доступна только на тарифе Стандарт/Профи; на «Лайт» закрыта [недоступно на тарифе]</p>
+</div></section>
+<section><div class="wrap">
+<p class="eyebrow">Дорожная карта</p>
+<h2>Первые шаги к топ-1</h2>
+<p class="lead-p">Порядок — от того, что возвращает результат быстрее всего, к добору баллов карточки.</p>
+<ul class="edu">
+<li><p class="et">1. Склеить отзывы со старой карточки</p><p class="ed">Обратиться в поддержку ПроДокторов и перенести/склеить 26 отзывов и рейтинг None с закрытой карточки 46670 на живую. Это разом возвращает накопленную пациентскую историю, которая сейчас лежит мёртвым грузом.</p></li>
+<li><p class="et">2. Онлайн-запись на услуги (+100 баллов)</p><p class="ed">Открыть онлайн-запись на все услуги (интеграция МИС ↔ ПроДокторов).</p></li>
+<li><p class="et">3. Онлайн-запись к врачам (+100 баллов)</p><p class="ed">Открыть слоты онлайн-записи у каждого врача в карточке.</p></li>
+<li><p class="et">4. Автоматическая выгрузка цен (+100 баллов)</p><p class="ed">Включить авто-выгрузку прайса из МИС (а не ручной список).</p></li>
+<li><p class="et">5. Успешность записи в клинику за 30 дней (+100 баллов)</p><p class="ed">Поднять долю состоявшихся записей (подтверждение, напоминания, работа администратора).</p></li>
+<li><p class="et">6. Клубная запись (+70 баллов)</p><p class="ed">Подключить Клуб ПроДокторов (клубная запись пациентов).</p></li>
+<li><p class="et">7. Звёздный рейтинг (+68 баллов)</p><p class="ed">Держать ровный поток свежих отзывов — вес отзыва падает за ~полгода.</p></li>
+<li><p class="et">8. Запись по телефону (+50 баллов)</p><p class="ed">Подключить запись по телефону через площадку (коллтрекинг ПД).</p></li>
+<li><p class="et">9. Запись в клинику доступна не меньше 15 часов в сутки (+50 баллов)</p><p class="ed">Расширить окно доступной записи до ≥15 часов в сутки.</p></li>
+<li><p class="et">10. Видеовизитка (+10 баллов)</p><p class="ed">Снять и загрузить видеовизитку клиники / врачей.</p></li>
+</ul>
+<p class="srcnote">Шаги собраны из кабинета [ЛК] и публичной карточки [публично]. Первые два — про отзывы (склейка старой карточки + ответ на негатив), дальше — добор баллов ранжирования.</p>
+</div></section>
+<footer class="sig"><div class="wrap">
+<b>Дорожная карта (Часть 2) для клиники «Цифровой Стоматологический Комплекс»</b><br>
+Dimitrovgrad · снято из кабинета ПроДокторов 16 июня 2026. Приватный документ, не публикуется. Read-only доступ в кабинет.
+</div></footer>
+</body></html>
